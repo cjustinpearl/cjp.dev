@@ -13,6 +13,7 @@ A fast public portfolio with evidence-backed career Q&A, an asynchronous content
 5. [Evidence and provenance](docs/provenance.md) — milestones, signed knowledge, verification limits, and future transparent matching.
 6. [Delivery workflow](docs/delivery-workflow.md) — work divisions, automation, skills, and session handoffs.
 7. [Technical sources](docs/sources.md) — primary references checked while preparing this draft.
+8. [M0 baseline preparation](docs/baseline/README.md) — concrete unsigned record, preservation destinations and remaining readiness checks.
 
 ## Repository boundary
 

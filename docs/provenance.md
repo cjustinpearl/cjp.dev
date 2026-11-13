@@ -1,6 +1,6 @@
 # Evidence, timestamps and future transparent matching
 
-Planning revision 0.4 · 2026-11-13 · public repository and immutable-release setting verified; no baseline signed. Exact CI workflow/ref and independent copy destination remain to be configured.
+Planning revision 0.5 · 2026-11-13 · baseline draft prepared; public repository and immutable-release setting verified; no baseline signed. B2 archive policy selected; provisioning and exact CI workflow/ref remain outstanding.
 
 ## What the design can establish
 
@@ -24,6 +24,8 @@ Use precise UI labels. Never collapse these into “truth verified” or “unbi
 Immediately before implementation, create a baseline with existing tools: off-the-shelf Cosign and OpenTimestamps clients. Do not implement custom project proof automation first and then call the later event the start of all implementation. Automating that workflow belongs to the measured build.
 
 Baseline contents: stable project ID; approved scope/criteria digest; baseline Git commit/tree and artifact inventory; planning dates as owner assertions; existing content and reused tools; explicit exclusions; declared AI assistance. No private source documents or their raw text are submitted to a public log.
+
+The [M0 preparation record](baseline/README.md) contains the concrete draft and storage setup state. Its review snapshot must be refreshed to the final committed preparation before signing. Final record bytes are an external release asset, so they do not attempt to contain their own Git commit hash.
 
 A record is a versioned JSON file signed as **its exact saved bytes**. Hash referenced artifacts with SHA-256. Preserve those bytes; verification must not parse and reserialize before checking the signature. There is no need to invent a new signature or canonicalization scheme.
 
@@ -57,6 +59,8 @@ Signing sequence:
 5. Upgrade/verify the OpenTimestamps proof as anchoring completes. Version proof sidecars; never rewrite signed record bytes to insert later timestamps.
 6. Publish a read-only timeline projection with separate asserted event, Sigstore evidence, and OpenTimestamps anchor status.
 
+Use the verified time evidence actually returned by the selected Cosign version. Rekor v1's integrated time and Rekor v2's separate timestamp-authority evidence have different semantics; public-log inclusion alone must not be presented as an independently validated wall-clock timestamp. Preserve the bundle and identify its timestamp source. [Sigstore timestamps](https://docs.sigstore.dev/cosign/verifying/timestamps/)
+
 Accepted policy (2026-10-19): the baseline must have externally verified Sigstore evidence and an OpenTimestamps submission with retained proof before implementation starts. Deployment and owner acceptance may proceed while Bitcoin anchoring is pending. Display that state separately from checks-passed, deployment and acceptance times; label a proof fully verified only after its anchor verifies. Upgrade pending proofs later as separate versioned artifacts, preserving the original signed bytes.
 
 ## Trust and availability
@@ -76,6 +80,7 @@ Selected automated signer: GitHub Actions in `cjustinpearl/cjp.dev`, issuer `htt
 - Publish the stable project ID and baseline digest outside the mutable site. Predecessor links expose changes to a known chain, but alone cannot reveal a hidden fork, deleted tail or replaced baseline. Independent copies and observation of new records strengthen detection.
 - Publish record/artifact bytes and proof bundles as GitHub immutable release assets, with immutability enabled and verified before publication. Keep an independent off-host copy. Release-page text and ordinary Git tags alone are insufficient; preservation still needs independent copies because a release can be deleted. Publish later proof upgrades as additional immutable artifacts rather than replacing locked assets. [GitHub immutable releases](https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases)
 - Transparency services do not guarantee that every referenced file will remain downloadable. Record the independent copy destination and baseline digest publication location before closing M0.
+- Selected independent artifact provider: a dedicated public Backblaze B2 bucket with 365-day compliance retention, separate from private operational backups. Preserve exact object-version IDs and digests. Provisioning, public-download verification and actual retain-until dates are tracked in the [preservation plan](baseline/README.md#preservation-locations). A retention window is not a promise of permanent availability.
 - Corrections append a record referring to the superseded digest. Public log metadata is intended to persist; the owner has selected the personal identity above. Verify the configured sign-in flow before first submission.
 - Standard verification still depends on trust roots and, for OpenTimestamps, suitable Bitcoin verification data. Supply documented tooling/prerequisites; do not promise arbitrary offline verification with only an HTML page.
 

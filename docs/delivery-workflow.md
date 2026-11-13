@@ -1,6 +1,6 @@
 # Delivery workflow and divisions of work
 
-Planning revision 0.5 · 2026-11-13 · M0 tooling and public repository prepared; baseline not yet signed. No project agents, custom skills, CI jobs or application code have been created.
+Planning revision 0.6 · 2026-11-13 · M0 baseline draft and preservation plan prepared; baseline not yet signed. No project agents, custom skills, CI jobs or application code have been created.
 
 ## Smallest useful working arrangement
 
@@ -97,7 +97,7 @@ The owner approved baseline policies on 2026-10-19. This approval date is not th
 4. Freeze the reviewed bytes immediately before implementation. Sign with the selected Google identity, independently verify Cosign/Sigstore evidence, submit OpenTimestamps and retain its proof, then publish the immutable artifacts and independent copy/digest. Personal Google authentication requires the owner's interactive sign-in.
 5. Verify the published downloads against the original digests and signer policy. Save the successful verifier output and proof status. M0 is complete when these checks pass; OTS anchoring may still be pending. Continue directly into M1 and preserve the original baseline unchanged.
 
-Repository preparation is complete as recorded below. Baseline preparation, signing and proof publication remain outstanding. Remaining access-policy, provider, content and retention choices stay attached to their implementation milestones; they do not require reopening accepted architecture decisions.
+Repository preparation is complete as recorded below. The [baseline draft and preservation plan](baseline/README.md) now bind a reviewed snapshot and disclose prior work; final freeze, signing and proof publication remain outstanding. Remaining access-policy, provider, content and retention choices stay attached to their implementation milestones; they do not require reopening accepted architecture decisions.
 
 ### M0 readiness record — 2026-11-13
 
@@ -109,7 +109,9 @@ Repository preparation is complete as recorded below. Baseline preparation, sign
 | Local repository | Git root is `site/`, branch `main`, remote `https://github.com/cjustinpearl/cjp.dev.git`. The parent workspace has no Git metadata. Author identity and GitHub CLI credential helper are configured only in this repository; global Git settings were preserved. |
 | Public inventory and licensing | Reviewed 15 regular text files: planning documents, four Mermaid diagrams, `.gitignore`, `LICENSE`, and `LICENSE-SCOPE.md`. No private career inputs, symlinks or unexpected files. Credential/private-path scan passed. MIT covers original software and associated technical documentation; career content, personal assets and third-party material are excluded. |
 | Immutable releases | Enabled through GitHub's repository API; a subsequent read returned `enabled: true`. This is configuration verification, not a completed release or signed-proof test. |
-| Baseline and proofs | No baseline record, signature, OpenTimestamps submission, tag or release created. Independent artifact-copy and baseline-digest publication destinations still need to be established. |
+| Baseline and proofs | An unsigned [baseline draft](baseline/baseline.draft.json) now identifies the project, original 15-file planning snapshot and SHA-256 inventory. Its start time is null; final freeze must include subsequent preparation. No signature, OpenTimestamps submission, tag or release created. |
+| Independent preservation | Public B2 archive and 365-day compliance retention selected. API authentication succeeded, but creation returned `no_payment_history`; no project bucket was created or existing bucket changed. Sigstore is the selected external signed-digest publication service; no log entry exists yet. |
+| Development readiness | Node `v26.7.0`, pnpm `11.25.0`, uv `0.12.5`, Python `3.14.7` are on PATH. Docker/Compose are not. These observations do not pin application versions or establish dependency compatibility. |
 
 Installations used `brew install cosign` and `uv tool install opentimestamps-client`. Unrelated Homebrew upgrades/cleanup were disabled. Both commands are available on PATH. These are executable/readiness checks, not an end-to-end signing or Bitcoin-anchor verification. Personal Google authentication is deferred until the reviewed baseline is ready to sign. Sources: [Cosign installation](https://docs.sigstore.dev/cosign/system_config/installation/) and [OpenTimestamps client](https://github.com/opentimestamps/opentimestamps-client).
 

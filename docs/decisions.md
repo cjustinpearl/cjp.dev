@@ -1,6 +1,6 @@
 # Decisions and open questions
 
-Planning revision 0.5 · 2026-11-13 · public planning repository established; no start record signed. Approval of a technology is not evidence that it is implemented.
+Planning revision 0.6 · 2026-11-13 · baseline draft prepared; independent archive policy selected; no start record signed. Approval of a technology is not evidence that it is implemented.
 
 ## Accepted decisions
 
@@ -27,8 +27,9 @@ Planning revision 0.5 · 2026-11-13 · public planning repository established; n
 | D19 | Personal signing account: Google identity `c.justin.pearl@gmail.com` | Use for the baseline and personal acceptance records. Identity metadata is public in signing evidence. The exact verifier policy is documented in [provenance](provenance.md#selected-identities). |
 | D20 | Release contract approved on 2026-10-19: PRD-01–07 and mapped launch SRS checks, one résumé and two approved case studies | Retain reviewed Q&A, security, recovery and public/retrieval performance checks. Model first-token p95 ≤3 seconds is a measured objective, not a release gate. |
 | D21 | MIT for original application code and associated technical documentation | Added [MIT license](../LICENSE) and [content exclusions](../LICENSE-SCOPE.md) on 2026-11-13. Personal résumé material, personal assets and third-party content retain separate rights/notices. |
-| D22 | GitHub immutable release assets plus an independent off-host copy; independently publish the baseline digest | Immutable releases enabled and verified through GitHub's API on 2026-11-13. No release published yet. Independent copy/digest publication destinations remain to be established. Preserve exact record bytes and separate versioned proof upgrades. |
+| D22 | GitHub immutable release assets plus an independent off-host copy; independently publish the baseline digest | Immutable releases enabled and verified through GitHub's API on 2026-11-13. No release published yet. B2 is selected under D24; the signed digest will be recorded in Sigstore's public log. Preserve exact record bytes, log locators, independent copies and separate versioned proof upgrades. |
 | D23 | Verified Sigstore evidence and OpenTimestamps submission required before implementation | Deployment and owner acceptance may proceed while Bitcoin anchoring is pending. Display that state; fully verified status requires successful anchoring. |
+| D24 | Dedicated public Backblaze B2 evidence archive with 365-day compliance-mode Object Lock | Selected on 2026-11-13 using an existing account. Public-bucket creation is currently blocked by Backblaze's payment-history prerequisite. Protected versions cannot be deleted or have retention shortened during the period; extension is possible. No automatic deletion lifecycle is planned. Private operational backup storage remains a separate decision. |
 
 ## Accepted implementation defaults
 
@@ -79,7 +80,7 @@ On 2026-10-19, the owner approved the remaining recommendations below. Repositor
 | Evidence publication | Use GitHub immutable release assets plus an independent off-host copy; publish the baseline digest independently of the mutable site. Later proof upgrades are additional artifacts. |
 | Proof completion | Require verified Sigstore evidence and OpenTimestamps submission before implementation. Permit deployment and owner acceptance while Bitcoin anchoring is pending, display that state, and mark a proof fully verified only after successful anchoring. This replaces the earlier proposed rule requiring completed anchoring for release acceptance. |
 
-Accepted choices have been reconciled into the PRD, SRS, architecture and provenance documents. Public repository preparation and GitHub account verification are complete as recorded in [M0 readiness](delivery-workflow.md#m0-readiness-record--2026-11-13). Next: prepare the exact baseline record and independent preservation destinations, then exercise and verify the selected signing flow when ready to begin implementation. No measured start event has been recorded. Provider choices, access policy details, content approvals and retention proposals remain scheduled for their relevant implementation slices.
+Accepted choices have been reconciled into the PRD, SRS, architecture and provenance documents. Public repository preparation and GitHub account verification are complete as recorded in [M0 readiness](delivery-workflow.md#m0-readiness-record--2026-11-13). The [concrete baseline draft and preservation plan](baseline/README.md) are prepared. Storage provisioning and local container readiness remain before the final freeze and selected signing flow. No measured start event has been recorded. Provider choices, access policy details, content approvals and other retention proposals remain scheduled for their relevant implementation slices.
 
 ## Budget and capacity update — 2026-10-12
 

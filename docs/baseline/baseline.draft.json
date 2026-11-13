@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "record_status": "draft-not-for-signing",
+  "project_id": "urn:uuid:5b000c4f-6153-4f29-a5b3-9b0bd8f2a05a",
+  "project_name": "cjp.dev",
+  "repository": "https://github.com/cjustinpearl/cjp.dev",
+  "kind": "baseline",
+  "record_id": "M0-baseline",
+  "milestone_id": "M0",
+  "previous_record_digest": null,
+  "asserted_event_time_utc": null,
+  "time_semantics": {
+    "asserted_event_time": "Set only when the final reviewed baseline is frozen immediately before signing; not a backdated planning date.",
+    "measured_interval": "Externally witnessed baseline to externally witnessed owner acceptance of the release; elapsed calendar time, not labor hours.",
+    "external_evidence": "Sigstore bundle timestamps and OpenTimestamps anchor are separate evidence, recorded after signing/submission; neither proves no earlier work."
+  },
+  "source_snapshot": {
+    "status": "review-snapshot-refresh-at-freeze",
+    "git_commit": "8ec3af396dcf1ded49e1e69d4b1a4391b28c9389",
+    "git_tree": "54df65c679eddb3de04ced11e7610c237fb7e7ed",
+    "git_object_format": "sha1",
+    "inventory_hash_algorithm": "sha256",
+    "files": [
+      {
+        "path": ".gitignore",
+        "bytes": 438,
+        "sha256": "6389b17b4810f49d3613e184d684a57e19dda30704a5ed9e8b7f4d70aaa80c30"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1072,
+        "sha256": "324d727f0908a2ce256d55347e2f7a9fd50b92c4541cc62bebd092b81ee6e4ce"
+      },
+      {
+        "path": "LICENSE-SCOPE.md",
+        "bytes": 1888,
+        "sha256": "34cc04d21f08e1f35da3417cc713acf9085d6b27fb49efa00f6d71b56dde6ac1"
+      },
+      {
+        "path": "README.md",
+        "bytes": 3463,
+        "sha256": "4f17cdde63852ddfe30a023a91f1af64616186fa5836df5719ce639784580841"
+      },
+      {
+        "path": "docs/architecture.md",
+        "bytes": 21116,
+        "sha256": "2dd1833b9c7133bdcd3dafa2d86b03d52aff135d15138635762dd2826d72d150"
+      },
+      {
+        "path": "docs/decisions.md",
+        "bytes": 16296,
+        "sha256": "fea59edd078dfaac1095de72e26b8cbf285e041c193beb1924175ff5b34f4be2"
+      },
+      {
+        "path": "docs/delivery-workflow.md",
+        "bytes": 16578,
+        "sha256": "a7fe50d0398a737d58140e8e35de7ebde9d859278e9199c5360e52a07715a3d4"
+      },
+      {
+        "path": "docs/diagrams/application.mmd",
+        "bytes": 1330,
+        "sha256": "4423d056ed1db8014746634d30f9861eaeba7cc3dc8e356b15fd607966147445"
+      },
+      {
+        "path": "docs/diagrams/data.mmd",
+        "bytes": 2679,
+        "sha256": "32cf2b0e41e201cdda3c829cb1da3cfa34f5aa7a6a8af313bd258c99b51aa0bb"
+      },
+      {
+        "path": "docs/diagrams/integration.mmd",
+        "bytes": 2154,
+        "sha256": "f808ea6a293208c00e2e414517ae9b275d9af4649122c8f7a924686df7d0bc8a"
+      },
+      {
+        "path": "docs/diagrams/system.mmd",
+        "bytes": 1927,
+        "sha256": "894ff9e887f06e6cf61a379951fe413c6ea8aa1050a7125c60c5ae43fd720ecc"
+      },
+      {
+        "path": "docs/prd.md",
+        "bytes": 8212,
+        "sha256": "0a6d02fbb89ebb1b4b8baa0372a161199d8bcdc3d73acf8d2d892163ffc51594"
+      },
+      {
+        "path": "docs/provenance.md",
+        "bytes": 13544,
+        "sha256": "c5d39b355b9e3ff1277e540fa717c37b3b7820088655286931065c2730fd250a"
+      },
+      {
+        "path": "docs/sources.md",
+        "bytes": 4641,
+        "sha256": "974655093e4830aa864e1a1ec2bd6b0b64aed7f6074a953c5baaf089d943eca5"
+      },
+      {
+        "path": "docs/srs.md",
+        "bytes": 18857,
+        "sha256": "515ff62df5b7294a97eebc7cede9bf5b7d804e99d70fba6a80033d6004f4d287"
+      }
+    ],
+    "archive": {
+      "name": "planning-source.tar",
+      "bytes": null,
+      "sha256": null
+    }
+  },
+  "release_contract": {
+    "approval_date_owner_asserted": "2026-10-19",
+    "documents": [
+      {
+        "path": "docs/prd.md",
+        "sha256": "0a6d02fbb89ebb1b4b8baa0372a161199d8bcdc3d73acf8d2d892163ffc51594"
+      },
+      {
+        "path": "docs/srs.md",
+        "sha256": "515ff62df5b7294a97eebc7cede9bf5b7d804e99d70fba6a80033d6004f4d287"
+      },
+      {
+        "path": "docs/decisions.md",
+        "sha256": "fea59edd078dfaac1095de72e26b8cbf285e041c193beb1924175ff5b34f4be2"
+      },
+      {
+        "path": "docs/delivery-workflow.md",
+        "sha256": "a7fe50d0398a737d58140e8e35de7ebde9d859278e9199c5360e52a07715a3d4"
+      }
+    ],
+    "product_requirements": [
+      "PRD-01",
+      "PRD-02",
+      "PRD-03",
+      "PRD-04",
+      "PRD-05",
+      "PRD-06",
+      "PRD-07"
+    ],
+    "launch_content": {
+      "approved_resumes": 1,
+      "approved_case_studies": 2
+    },
+    "evaluation": {
+      "minimum_owner_reviewed_questions": 25,
+      "fabricated_personal_achievements_allowed_in_release_set": 0,
+      "resolvable_final_citation_ids_percent": 100
+    },
+    "model_first_token_p95_seconds": {
+      "objective": 3,
+      "measurement_and_reporting_required": true,
+      "achievement_is_release_gate": false
+    },
+    "scope_rule": "Launch SRS requirements apply; FUT-01 through FUT-03 are later. Operational examples remain proposals until resolved. Scope changes require an explicit recorded amendment before acceptance.",
+    "milestone_plan": "M0 baseline; M1 working skeleton; M2 evidence pipeline; M3 protected Q&A; M4 first public release; M5 Kafka later; M6 transparent matching optional."
+  },
+  "prior_work_disclosure": {
+    "planning_start_date": null,
+    "planning_start_date_note": "Earlier planning predates this record; no independently verified original ideation date is asserted.",
+    "completed_before_baseline": [
+      "Product and architecture discussions, technology research, PRD/SRS, Mermaid diagrams, decisions and delivery planning.",
+      "Private career-material collection and resume/application preparation; these materials are not included or hashed in this public record.",
+      "Existing domain ownership and an existing Hetzner VPS; no project deployment or live host inspection recorded.",
+      "Installation and help/version checks of Cosign and OpenTimestamps; GitHub authentication, public repository setup, scoped MIT licensing and immutable-release configuration.",
+      "Baseline drafting, one-off inventory hashing/validation and manual preservation setup; no reusable project provenance automation implemented."
+    ],
+    "existing_public_application_code": "None in the reviewed Git snapshot.",
+    "private_material_boundary": "Private parent-workspace material stays outside Git and all public evidence packages. Future content requires individual publication review.",
+    "ai_assistance": "Codex assisted with research, architecture, documents, repository preparation and baseline preparation. AI-assisted implementation is intended; this is not a claim of unaided work.",
+    "reuse": "Standard Git/GitHub, Cosign/Sigstore, OpenTimestamps and existing development tools; frameworks, libraries, skills and generated scaffolding used during implementation will be disclosed in their committed manifests and work records.",
+    "skill_learning_claim": "Prior unfamiliarity is owner-reported, not cryptographically established."
+  },
+  "signer_policy": {
+    "certificate_identity": "c.justin.pearl@gmail.com",
+    "certificate_oidc_issuer": "https://oauth2.sigstore.dev/auth",
+    "flow": "Personal Google login through Sigstore federated browser authentication.",
+    "require_public_transparency_log": true,
+    "policy_note": "Verify these expected values independently; do not adopt identity or issuer from the returned bundle."
+  },
+  "proof_policy": {
+    "sigstore_verified_before_implementation": true,
+    "opentimestamps_submitted_and_proof_retained_before_implementation": true,
+    "bitcoin_anchor_may_be_pending_at_implementation_deployment_and_acceptance": true,
+    "proof_upgrades": "Separate versioned sidecars; original signed record bytes remain unchanged."
+  },
+  "preservation_plan": {
+    "github": {
+      "repository": "cjustinpearl/cjp.dev",
+      "planned_release_tag": "m0-baseline",
+      "immutable_releases_verified": true,
+      "publication_status": "not-created"
+    },
+    "independent_archive": {
+      "status": "selected-creation-blocked-no-payment-history",
+      "provider": "Backblaze B2",
+      "bucket_name_availability_verified": false,
+      "bucket_id": null,
+      "public_download_origin": null,
+      "path_template": "projects/{project_uuid}/records/sha256/{baseline_sha256}/",
+      "bucket_name_candidate": "cjp-dev-public-evidence",
+      "object_lock_mode": "compliance",
+      "retention_days": 365,
+      "selection_date_owner_asserted": "2026-11-13",
+      "account_download_origin_observed": "https://f005.backblazeb2.com",
+      "account_s3_endpoint_observed": "https://s3.us-east-005.backblazeb2.com",
+      "provisioning_note": "Authentication succeeded; public bucket creation returned no_payment_history. No bucket was created and no existing buckets were changed."
+    },
+    "independent_digest_publication": {
+      "service": "Sigstore public transparency log",
+      "entry_locator": null,
+      "policy": "Publish the signed baseline SHA-256 through Cosign and preserve the returned log identity, index/entry locator, inclusion proof and any timestamp-authority evidence. Do not assume a specific Rekor API generation."
+    },
+    "discovery": "Publish the project ID, baseline digest and exact object-version locators in the release and independent archive receipt. A mutable latest pointer is discovery only, never the trust anchor."
+  },
+  "freeze_requirements": [
+    "Confirm preservation provider, retention and working independent download destination; record exact endpoints, not proposed names.",
+    "Resolve local container-runtime readiness and check compatible development runtimes; record checks without claiming an application build.",
+    "Commit and review the final public planning state including baseline preparation; require clean worktree and public/private inventory review.",
+    "Create a tracked-files-only Git archive of that exact commit, recompute full file inventory and contract digests, and record archive byte length and SHA-256.",
+    "Create final baseline.json outside the snapshot. Preserve this project ID. Remove draft-only status, proposed destination fields and freeze_requirements after resolving them; set actual freeze time.",
+    "Review final bytes, then sign, verify, timestamp, preserve and verify downloads immediately before beginning implementation. Do not sign this draft."
+  ]
+}
