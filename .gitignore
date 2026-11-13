@@ -1,0 +1,27 @@
+# Local secrets and machine-specific configuration.
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.key
+.DS_Store
+
+# Private inputs and runtime data belong outside this public repository.
+/private/
+/raw-inputs/
+/candidate-content/
+/secrets/
+/backups/
+/runtime/
+
+# Dependencies and generated development output.
+node_modules/
+.svelte-kit/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+/coverage/
+/test-results/
+/playwright-report/

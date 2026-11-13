@@ -1,0 +1,46 @@
+flowchart TB
+  V["Recruiter / public visitor"]
+  O["Owner / private CLI"]
+  E["PROPOSED: edge proxy / DDoS provider<br/>provider and plan TBD"]
+  subgraph HOST["Selected deployment: existing Hetzner CPX31, us-west<br/>4 vCPU / 8 GB RAM / 160 GB disk / Ubuntu 24.04.4 LTS"]
+    C["Caddy / TLS ingress"]
+    W["SvelteKit / Node<br/>public pages, GraphQL, access, chat"]
+    P[("PostgreSQL<br/>separate roles and schemas")]
+    R["RabbitMQ<br/>private task broker"]
+    PY["Python / Celery worker<br/>bounded ingestion jobs"]
+    F[("Private input / candidate files<br/>never public web assets")]
+    T["OpenTelemetry export<br/>destination / retention TBD"]
+    C --> W
+    W --> P
+    R --> PY
+    PY --> P
+    PY --> F
+    W -. "sanitized telemetry" .-> T
+    PY -. "sanitized telemetry" .-> T
+  end
+  G["Public Git repository: cjustinpearl/cjp.dev<br/>approved content and code only"]
+  CI["GitHub Actions<br/>checks, corpus build, release signing"]
+  A[("GitHub immutable release assets<br/>public artifacts and proof bundles")]
+  BACK[("Private encrypted backups<br/>off-host destination TBD")]
+  MIRROR[("Public artifact mirror<br/>independent destination TBD")]
+  SIG["Sigstore public services<br/>Fulcio / transparency log"]
+  OTS["OpenTimestamps calendars<br/>eventual Bitcoin anchor"]
+  MAIL["Transactional email<br/>provider TBD"]
+  LLM["OpenAI Responses API<br/>model TBD"]
+  K["LATER: Kafka and replay consumers<br/>placement TBD"]
+  V -->|HTTPS| E
+  E -->|protected origin HTTPS| C
+  O -->|private network / tunnel| R
+  O -->|private input transfer| F
+  O -->|reviewed publication| G
+  G --> CI
+  CI -->|signed outputs| A
+  CI --> SIG
+  CI --> OTS
+  A -->|verify before deployment / import| W
+  P -. "encrypted backups" .-> BACK
+  A -. "independent copy" .-> MIRROR
+  W -->|HTTPS| MAIL
+  W -->|bounded HTTPS streaming| LLM
+  W -. "later: transactional outbox relay" .-> K
+  V -->|independent download and verify| A

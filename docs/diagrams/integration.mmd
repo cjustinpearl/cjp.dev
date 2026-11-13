@@ -1,0 +1,41 @@
+sequenceDiagram
+  autonumber
+  actor Owner
+  participant CLI as Python CLI
+  participant Queue as RabbitMQ / Celery
+  participant Git as Public Git / CI
+  participant Proof as Sigstore / OpenTimestamps
+  participant Store as Artifacts / Postgres
+  actor Visitor
+  participant App as SvelteKit
+  participant External as Email / Model providers
+  Owner->>CLI: Submit private input and requested transform
+  CLI->>Queue: Job ID, input reference, pipeline version
+  Queue->>Store: Candidate output and bounded job status
+  Note over Queue,Store: Retry transient errors, deduplicate outputs, terminal failure visible
+  Owner->>CLI: Review candidate and approve public material
+  CLI-->>Owner: Approved Markdown / permitted excerpts
+  Owner->>Git: Commit reviewed publication
+  Git->>Proof: Sign corpus manifest and submit digest for timestamp
+  Proof-->>Git: Sigstore bundle, OTS proof may be pending
+  Git->>Store: Verify, import immutable version, activate atomically
+  Note over Git,Store: Old corpus remains active on failure, pin version for each query
+  Visitor->>App: Request access with company email
+  App->>External: Rate-limited single-use link delivery
+  Visitor->>App: Deliberate redemption then chat request
+  App->>Store: Verify grant and reserve allowance / cost atomically
+  alt Denied or budget unavailable
+    App-->>Visitor: Explain access / allowance state
+  else Authorized and reserved
+    App->>Store: Retrieve from one signed public corpus version
+    App->>External: Bounded model request with selected evidence
+    External-->>App: Stream / completion / failure
+    App-->>Visitor: Provisional stream then final sources and safe timings
+    App->>Store: Reconcile usage, store metadata only
+  end
+  Note over Git,Proof: Baseline uses existing tools before implementation, later CI automates records
+  Owner->>Git: Accept checks-passed milestone by digest
+  Git->>Proof: Append owner-accepted record and proofs
+  Git->>Store: Publish verified record and downloadable bundle
+  Visitor->>Store: Download record, sources and proof bundles
+  Note over Visitor,Store: Independent verification checks identity and bytes, not factual truth

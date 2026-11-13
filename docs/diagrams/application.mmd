@@ -1,0 +1,40 @@
+flowchart LR
+  B["Browser"]
+  subgraph APP["SvelteKit application — one deployable"]
+    P["Prerendered résumé / projects<br/>static fallback"]
+    G["PROPOSED: GraphQL Yoga<br/>bounded public evidence queries"]
+    AUTH["Authentication + mailbox eligibility"]
+    GRANT["Access grant + revocation<br/>atomic usage / spend reservation"]
+    CHAT["Chat orchestrator<br/>stream, deadline, finalize usage"]
+    RET["Retrieval<br/>pin one published corpus version"]
+    CITE["Citation resolver / source inspector<br/>signature status separate from truth"]
+    META["Operational metadata / telemetry<br/>no transcript retention"]
+  end
+  DB[("Postgres: auth / grants / usage")]
+  KB[("Postgres: published knowledge<br/>full-text first; pgvector conditional")]
+  MODEL["Hosted LLM"]
+  CLI["Owner Python CLI"]
+  MQ["RabbitMQ"]
+  WORK["Celery ingestion<br/>extract, normalize, candidate checks"]
+  REVIEW["Owner review then Git commit"]
+  PUB["CI publication builder<br/>signed corpus + approved summaries"]
+  B --> P
+  B --> G
+  B --> AUTH
+  AUTH --> DB
+  B --> CHAT
+  CHAT --> GRANT
+  GRANT --> DB
+  CHAT --> RET
+  RET --> KB
+  G --> KB
+  CHAT --> MODEL
+  CHAT --> CITE
+  CITE --> KB
+  CHAT --> META
+  CLI --> MQ
+  MQ --> WORK
+  WORK --> REVIEW
+  REVIEW --> PUB
+  PUB -->|verified release import| KB
+  PUB -->|build public pages| P

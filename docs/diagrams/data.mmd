@@ -1,0 +1,121 @@
+erDiagram
+  PRINCIPAL ||--o{ ACCESS_GRANT : receives
+  PRINCIPAL ||--o{ SESSION : authenticates
+  PRINCIPAL ||--o{ LOGIN_TOKEN : redeems
+  ACCESS_GRANT ||--o{ USAGE_RESERVATION : authorizes
+  CORPUS_RELEASE }o--o{ SOURCE_VERSION : includes
+  CORPUS_RELEASE }o--o{ CLAIM_VERSION : includes
+  SOURCE_VERSION ||--o{ CHUNK : yields
+  CLAIM_VERSION ||--o{ CLAIM_EVIDENCE : supported_by
+  CHUNK ||--o{ CLAIM_EVIDENCE : cited_by
+  PROJECT ||--o{ CLAIM_VERSION : contextualizes
+  CLAIM_VERSION ||--o{ CLAIM_SKILL : demonstrates
+  SKILL ||--o{ CLAIM_SKILL : labels
+  INGESTION_JOB ||--o{ CANDIDATE_DOCUMENT : produces_private
+  SOURCE_VERSION o|--o{ CANDIDATE_DOCUMENT : approved_into
+  CORPUS_RELEASE o|--o{ SIGNED_RECORD : attested_by
+  SIGNED_RECORD ||--o{ PROOF_ARTIFACT : has
+  SIGNED_RECORD o|--o{ SIGNED_RECORD : references_previous
+  CORPUS_RELEASE o|--o{ QUERY_METADATA : used_by
+  PRINCIPAL {
+    uuid id PK
+    text verified_email
+  }
+  ACCESS_GRANT {
+    uuid id PK
+    uuid principal_id FK
+    timestamp expires_at
+    int allowance
+    timestamp revoked_at
+  }
+  LOGIN_TOKEN {
+    text token_hash PK
+    timestamp expires_at
+    timestamp consumed_at
+  }
+  SESSION {
+    uuid principal_id FK
+    timestamp expires_at
+  }
+  USAGE_RESERVATION {
+    uuid request_id PK
+    uuid grant_id FK
+    text state
+    numeric reserved_cost
+    numeric reconciled_cost
+  }
+  CORPUS_RELEASE {
+    text digest PK
+    text git_revision
+    text manifest_digest
+    timestamp activated_at
+  }
+  SOURCE_VERSION {
+    text digest PK
+    text source_kind
+    text public_locator
+    text publisher_attribution
+  }
+  CHUNK {
+    text id PK
+    text source_digest FK
+    text locator
+    text exact_excerpt
+  }
+  CLAIM_VERSION {
+    text id PK
+    text statement
+    text evidence_class
+    text qualifications
+  }
+  CLAIM_EVIDENCE {
+    text claim_id FK
+    text chunk_id FK
+    text relationship
+  }
+  CLAIM_SKILL {
+    text claim_id FK
+    text skill_id FK
+  }
+  PROJECT {
+    text id PK
+    text title
+  }
+  SKILL {
+    text id PK
+    text label
+  }
+  INGESTION_JOB {
+    uuid id PK
+    text input_digest
+    text pipeline_version
+    text state
+    int attempts
+  }
+  CANDIDATE_DOCUMENT {
+    uuid job_id FK
+    text private_locator
+    text review_state
+  }
+  SIGNED_RECORD {
+    text digest PK
+    text kind
+    text subject_digest
+    text previous_digest
+    text criteria_digest
+    timestamp asserted_event_time
+  }
+  PROOF_ARTIFACT {
+    text record_digest FK
+    text kind
+    text verification_state
+    text artifact_locator
+  }
+  QUERY_METADATA {
+    uuid request_id PK
+    text corpus_digest FK
+    text outcome
+    int input_tokens
+    int output_tokens
+    int duration_ms
+  }
