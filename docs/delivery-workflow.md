@@ -19,6 +19,10 @@ For complex database or visual work, the relevant role can become a narrower ass
 
 For the [prototype](srs.md#production-prototype-acceptance), make ownership explicit for runtime/access, the MCP server, the review agent, evaluation and release, and the visitor experience. Apply these as bounded assignments under the existing responsibilities. The owner approves interfaces, privacy boundaries, calibration rubrics, budget and acceptance. Keep independent verification separate from implementing changes and tuning evaluation policy. The integrator owns shared contracts and the work queue, and coordinates any interface or schema change before parallel work resumes.
 
+### Architect and backend handoffs
+
+At each completed architect/integrator or backend/data task, send the owner a short update in the active chat. Link the exact revision, component specification and work record. Include the design choice and tradeoff, a check actually run and its result, a trace or fixture the owner can walk, and the next dependency or decision. Report a blocker when it changes a forecast. Keep candidate integration and independent verification visible as separate events. Record the same handoff in the work index so a new contributor can resume from disk.
+
 ## Skill policy
 
 - Reuse available **Impeccable** for UI work. Record the selected version; keep the product requirement for restraint explicit.

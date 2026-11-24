@@ -10,6 +10,12 @@ Use one SvelteKit web application, one PostgreSQL service, and a Python content 
 
 Diagrams are skeletons, not deployed-state claims. Labels `PROPOSED`, `TBD`, and `LATER` identify unresolved placement or deferred components. Arrows represent permitted logical flows, not unrestricted network access. Standalone `.mmd` files are the diagram editing source; embedded copies below must remain identical.
 
+### Decisions for the first browser slice
+
+Keep SvelteKit on the selected Hetzner host. Prerender the public résumé and evidence pages. Serve mailbox redemption, grants, Q&A and the session-bound inspector on the same origin through Caddy, with private responses excluded from shared caches. Select exact compatible package versions and test token redemption and reservation contracts after M0. Postmark is the selected transactional mail provider. Use a verified sender and a project-scoped server token. Keep open and link tracking disabled for sign-in mail. Confirm receipt and deliberate redemption with a controlled mailbox.
+
+The public portfolio is anonymous. For the full release, prefer an owner-maintained list of exact eligible domains, verified mailbox ownership and independent revocable grants. Individual invitation eligibility ships first. The web slice can use native color-scheme support, an accessible three-choice preference and browser-local persistence. CDN placement, extra web replicas, a separate database host and further themes can follow measurements. Verify existing ingress ownership, free resources and backup/restore on the selected host before deployment.
+
 ## System level
 
 People, deployments, external services, and trust boundaries. Broker and database ports are private. Public artifacts, their independent mirror, and private encrypted backups have separate destinations and credentials.
@@ -49,7 +55,7 @@ flowchart TB
   MIRROR[("Public artifact mirror<br/>independent destination TBD")]
   SIG["Sigstore public services<br/>Fulcio / transparency log"]
   OTS["OpenTimestamps calendars<br/>eventual Bitcoin anchor"]
-  MAIL["Transactional email<br/>provider TBD"]
+  MAIL["Postmark<br/>transactional email"]
   LLM["OpenAI Responses API<br/>model TBD"]
   K["LATER: Kafka and replay consumers<br/>placement TBD"]
   V -->|HTTPS| E

@@ -6,7 +6,7 @@ Planning revision 0.3 · 2026-10-19 · release requirements approved; derived fr
 
 ## Production prototype acceptance
 
-Owner-approved 2026-11-23 profile. Freeze the [accepted cut and numeric limits](components/README.md) at M0. These requirements govern prototype acceptance. The original launch requirements below govern the first full public release. Where the prototype reuses a capability, its privacy, authorization and integrity guarantees apply from the first deployment.
+Owner-approved 2026-11-23, revised 2026-11-24. Freeze the [accepted cut and numeric limits](components/README.md) at M0. These requirements govern prototype acceptance. The original launch requirements below govern the first full public release. Where the prototype reuses a capability, its privacy, authorization and integrity guarantees apply from the first deployment.
 
 | ID | Requirement | Acceptance evidence |
 |---|---|---|

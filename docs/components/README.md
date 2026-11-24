@@ -1,6 +1,6 @@
-# Production prototype profile v1
+# Production prototype profile v2
 
-Owner-approved on 2026-11-23. The acceptance contract is PRD-P0-01–03 and [DEMO-01 through DEMO-07](../srs.md#production-prototype-acceptance) on `https://cjp.dev`. Scope approval precedes the M0 witness. Implementation, production activation and personal acceptance have their own evidence.
+Scope approved on 2026-11-23 and revised by the owner on 2026-11-24. The acceptance contract is PRD-P0-01–03 and [DEMO-01 through DEMO-07](../srs.md#production-prototype-acceptance) on `https://cjp.dev`. Scope approval precedes the M0 witness. Implementation, production activation and personal acceptance have their own evidence.
 
 ### Accepted cut
 
@@ -8,12 +8,16 @@ Deliver a usable public résumé, contact route and owner-signed seed with enoug
 
 The prototype defers the full two-case-study portfolio, self-service company-domain eligibility, public GraphQL, private asynchronous ingestion, the full 25-question release evaluation and full-release performance campaign. The [first public release](../prd.md#first-public-release) retains PRD-01–07 and its mapped SRS contract. The prototype keeps public usability during outages, privacy, denial, citation validity, spending enforcement, evaluation gates, signed publication, off-site preservation, restore and rollback.
 
+The first stretch goal after P0 acceptance is two publication-approved case studies linked to the contributions and passages they substantiate. Use spare capacity for other individually verified full-release functions, starting with exact-domain eligibility and evidence browsing. Reserve the release verification and rollback window before selecting an increment.
+
+For the public interface, provide an accessible System / Light / Dark preference with a system default and a browser-local override. Reuse native controls and CSS. Additional palettes are optional polish.
+
 ### Operating limits
 
-| Policy | Accepted v1 |
+| Policy | Accepted v2 |
 |---|---|
 | Invitation and session | Individual eligibility 48h, mailbox link 10 min and single-use on deliberate redemption, session 8h absolute. Grant 20 turns and US$0.40 over 7 days, revocable. Reissue and re-login preserve used allowance. |
-| Concurrency and mail | One active turn per grant, three globally including evaluation. At most three sends per normalized address/hour, ten per trusted network/hour and 30 globally per UTC day. One send attempt per accepted request. |
+| Concurrency and mail | One active turn per grant, three globally including evaluation. At most ten sends per normalized address/hour, ten per trusted network/hour and 30 globally per UTC day. One send attempt per accepted request. |
 | Request and evidence | 12 KiB HTTP body, 1,000 UTF-8 bytes per question. One preceding approved Q&A pair summarized within 256 tokens in the current session. Fresh retrieval every turn, at most three passages of 384 tokens each. |
 | Calls and time | One evidence search, one draft, at most one review model call. End-to-end deadline 45s. MCP discovery/search 3s total, draft 18s, review including its provider 20s, all capped by remaining time. Zero automatic paid retries. |
 | Model tokens and reservation | At most 4,096 total input tokens per paid stage. Draft output ≤640 and review output ≤256 billable tokens including reasoning. Reserve a conservative US$0.02 per complete turn at the reviewed rate card before dispatch. Fail closed if rates or inputs no longer fit. |

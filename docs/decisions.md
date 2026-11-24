@@ -32,7 +32,7 @@ Planning revision 0.6 · 2026-11-13 · baseline draft prepared; independent arch
 | D22 | GitHub immutable release assets plus an independent off-host copy; independently publish the baseline digest | Immutable releases enabled and verified through GitHub's API on 2026-11-13. No release published yet. B2 is selected under D24; the signed digest will be recorded in Sigstore's public log. Preserve exact record bytes, log locators, independent copies and separate versioned proof upgrades. |
 | D23 | Verified Sigstore evidence and OpenTimestamps submission required before implementation | Deployment and owner acceptance may proceed while Bitcoin anchoring is pending. Display that state; fully verified status requires successful anchoring. |
 | D24 | Dedicated public Backblaze B2 evidence archive with 365-day compliance-mode Object Lock | Selected on 2026-11-13. After the owner resolved payment eligibility and created the bucket, configuration and probe verification completed on 2026-11-23; see the [storage receipt](baseline/preservation.json). Defaults are compliance/365 days with no automatic deletion lifecycle. A test upload inherited retention, anonymous downloads matched, and shortening was rejected. Private operational backup storage remains a separate decision. |
-| D25 | Prioritize a tested, invite-accessible production prototype with inspectable federation, evaluation and a witnessed build timeline | Owner approved the [prototype profile](components/README.md) and its bounded deferrals on 2026-11-23. Include them in the M0 freeze. The published proof identifies the profile that passed. |
+| D25 | Prioritize a tested, invite-accessible production prototype with inspectable federation, evaluation and a witnessed build timeline | Owner approved the [prototype profile](components/README.md) and its bounded deferrals on 2026-11-23 and revised the mail limit and stretch priorities on 2026-11-24. Include them in the M0 freeze. The published proof identifies the profile that passed. |
 
 ## Proposed prototype decisions
 
@@ -53,7 +53,7 @@ P01–P10 were approved on 2026-10-19. Their original IDs are retained for trace
 | P02 | Caddy + Docker Compose; optional Cloudflare edge proxy | Simple deployment and TLS. Upstream DDoS mitigation needs a provider; software on a saturated VPS cannot supply upstream bandwidth. Edge provider and plan remain TBD. |
 | P03 | GraphQL Yoga within SvelteKit, read-only public evidence API | Avoid another application service. Use bounded, approved frontend operations at launch. |
 | P04 | Better Auth magic links and sessions; separate application access grants | Reuse authentication plumbing while keeping eligibility, revocation, and spending policy explicit. Validate scanner-safe redemption and hashed-token configuration against the selected version. |
-| P05 | Hosted OpenAI model via the Responses API; managed transactional email | Evaluate model and provider choices against correctness, latency, cost, and data handling before launch. No credentials or provider model are selected here. |
+| P05 | Hosted OpenAI model via the Responses API; managed transactional email | Postmark selected for transactional invitations on 2026-11-24. Verify sender, transactional stream, isolated server credential and actual mailbox delivery. Check model choice, cost and data handling at integration. |
 | P06 | PostgreSQL full-text retrieval first; pgvector only if retrieval evaluation justifies it | Small corpus and exact career terminology favor a simple measurable baseline. Embeddings may improve paraphrase recall but add ingestion cost and versioning. |
 | P07 | Versioned SQL migrations with one migration owner/runner; Drizzle for TypeScript access and psycopg for Python | Both languages share explicit database contracts. Never let independent ORMs manage the same tables. Verify compatible versions during implementation. |
 | P08 | GitHub Actions for checks, builds, and milestone automation in `cjustinpearl/cjp.dev` | GitHub owner/repository are selected (D18). CI OIDC is suitable for signing; exact workflow/ref policy and automation remain to be configured. |
@@ -65,17 +65,17 @@ P01–P10 were approved on 2026-10-19. Their original IDs are retained for trace
 | ID | Resolution |
 |---|---|
 | U01 | On 2026-10-12, owner confirmed that US$20–50/month covers additional project spending outside the existing Hetzner bill. The current base hosting charge is not needed to allocate this budget; check it before proposing any hosting change. |
-| U09 | On 2026-11-23 the owner approved DEMO-01–07, the prototype deferrals and the [exact limits](components/README.md), including US$16 guest and US$4 evaluation within a US$20 ceiling. |
+| U09 | On 2026-11-24 the owner raised the normalized-address send cap from 3 to 10 per hour and accepted the added repeat-mail risk. The trusted-network limit is 10/hour and the site limit is 30/UTC day. On 2026-11-23 the owner approved DEMO-01–07, the prototype deferrals and the [exact limits](components/README.md), including US$16 guest and US$4 evaluation within a US$20 ceiling. |
 
 ## Decisions still needed
 
 | ID | Unknown | Resolve by | Impact |
 |---|---|---|---|
 | U02 | Live available RAM/disk/CPU and existing ingress configuration | Before deployment | Owner reports no substantial current workload; verify the proposed resource envelope and preserve any existing services. |
-| U03 | Full-release domain allowlist and eligibility policy. Prototype invitation and grant limits are approved. | Before access feature acceptance | These are operational policy, not identity guarantees. |
+| U03 | Full-release eligibility uses verified mailboxes on approved domains (D06). Review a manually maintained exact-domain list and removal semantics. P0 uses individual invitations. | Before access feature acceptance | These are operational policy, not identity guarantees. |
 | U04 | Verify the selected personal sign-in flow and exact issuer policy; specify the later CI workflow/ref allowlist | Personal policy before baseline publication; CI policy before its first signed milestone | Repository and Google account are selected (D18–D19). Verify against explicit expected identities, not identities supplied by an untrusted bundle. |
 | U05 | Publication-approved résumé and initial case studies | Before corpus release | Existing private briefs are inputs, not authorization to publish. |
-| U06 | Exact model, email provider, edge provider, telemetry destination, backup destination | Before integration / release acceptance | Document data handling, costs, secrets, and failure behavior. |
+| U06 | Exact model, Postmark sender setup, edge provider, telemetry destination, backup destination | Before integration / release acceptance | Document data handling, costs, secrets, and failure behavior. |
 | U07 | Remaining operational and full-release limits, service caps and performance measurement profiles beyond the approved prototype policy | Before their implementation acceptance | Release quality/performance objectives are accepted under D20. Explicit policy examples and resource ceilings remain proposals. |
 | U08 | Whether runtime job-match results need signatures, and who independently verifies them | Before the later matching milestone | Launch signs public knowledge; per-result signing needs a separate privacy and signer design. |
 | U10 | MCP SDK/protocol revision, capability bindings and private-caller credentials; model/policy settings for both stages | Before component integration | Pin actual compatible versions and show that unauthorized, disabled and mismatched capabilities fail closed. |
