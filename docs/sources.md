@@ -1,6 +1,6 @@
 # Primary technical references
 
-Checked for this planning draft on 2026-10-09, except the skill shortlist researched on 2026-10-03 and the Hetzner/RabbitMQ sizing references added on 2026-10-12. Resolve exact supported versions and pin dependencies during implementation. These sources support capabilities and constraints; architectural choices remain project judgments.
+Initial references checked on 2026-10-09, with earlier skill research on 2026-10-03 and Hetzner/RabbitMQ sizing references added on 2026-10-12. Agent runtime references were checked on 2026-11-23. Resolve exact supported versions and pin dependencies during implementation. These sources support capabilities and constraints; architectural choices remain project judgments.
 
 ## Hosting
 
@@ -30,6 +30,11 @@ Checked for this planning draft on 2026-10-09, except the skill shortlist resear
 - [RabbitMQ work queues](https://www.rabbitmq.com/tutorials/tutorial-two-python) — work distribution and acknowledgement concepts; consulted in earlier planning.
 - [RabbitMQ memory alarms](https://www.rabbitmq.com/docs/memory) — explicit absolute threshold for containers; backpressure threshold is not a hard memory cap.
 - [OpenTelemetry traces](https://opentelemetry.io/docs/concepts/signals/traces/) — portable tracing concepts; consulted in earlier planning.
+
+## Agent runtime and evaluation
+
+- [MCP tool discovery and invocation](https://modelcontextprotocol.io/specification/latest/server/tools) and [MCP transports](https://modelcontextprotocol.io/specification/latest/basic/transports) — standard tool schema discovery/calls and private Streamable HTTP option. Pin a compatible SDK and protocol revision after testing both endpoints.
+- [A2A protocol specification](https://a2a-protocol.org/latest/specification/) — a reference for agent discovery, delegation and task lifecycle. The initial review integration uses the project's typed contract.
 
 ## Skills and workflow
 

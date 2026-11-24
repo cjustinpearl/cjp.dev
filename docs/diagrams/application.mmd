@@ -5,14 +5,16 @@ flowchart LR
     G["PROPOSED: GraphQL Yoga<br/>bounded public evidence queries"]
     AUTH["Authentication + mailbox eligibility"]
     GRANT["Access grant + revocation<br/>atomic usage / spend reservation"]
-    CHAT["Chat orchestrator<br/>stream, deadline, finalize usage"]
-    RET["Retrieval<br/>pin one published corpus version"]
+    CHAT["Runtime harness<br/>pin corpus, policy and capability versions"]
+    REG["Approved capability catalog<br/>scope, schema and invocation limits"]
     CITE["Citation resolver / source inspector<br/>signature status separate from truth"]
     META["Operational metadata / telemetry<br/>no transcript retention"]
   end
   DB[("Postgres: auth / grants / usage")]
   KB[("Postgres: published knowledge<br/>full-text first; pgvector conditional")]
   MODEL["Hosted LLM"]
+  MCP["Private career evidence MCP server"]
+  EREV["Private evidence review agent"]
   CLI["Owner Python CLI"]
   MQ["RabbitMQ"]
   WORK["Celery ingestion<br/>extract, normalize, candidate checks"]
@@ -25,10 +27,13 @@ flowchart LR
   B --> CHAT
   CHAT --> GRANT
   GRANT --> DB
-  CHAT --> RET
-  RET --> KB
+  CHAT --> REG
+  CHAT -->|discover and invoke| MCP
+  MCP -->|read-only retrieval| KB
   G --> KB
-  CHAT --> MODEL
+  CHAT -->|draft| MODEL
+  CHAT -->|typed delegation| EREV
+  EREV -->|review| MODEL
   CHAT --> CITE
   CITE --> KB
   CHAT --> META

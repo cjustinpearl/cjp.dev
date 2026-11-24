@@ -1,8 +1,10 @@
 # M0 baseline preparation
 
-Prepared 2026-11-13. **No start record has been signed or timestamped.**
+Prepared 2026-11-13; storage verification completed 2026-11-23. **No start record has been signed or timestamped.**
 
 The [draft record](baseline.draft.json) gives this project the stable ID `urn:uuid:5b000c4f-6153-4f29-a5b3-9b0bd8f2a05a`. Keep that ID through later milestones and repository moves. The draft pins the 15-file planning snapshot at commit `8ec3af396dcf1ded49e1e69d4b1a4391b28c9389`, with a SHA-256 and byte length for each file. Its start time is deliberately null.
+
+The owner approved the [production prototype profile and limits](../components/README.md) after that review snapshot. Include these criteria and deferrals alongside the full-release contract in the final commit and digest inventory. The existing unsigned draft remains a record of the earlier preparation.
 
 This is a review snapshot, not the final freeze. Before signing, refresh the commit, tree, inventory and criteria digests to include all subsequent preparation. Preserve the final record as a release asset outside the source snapshot it describes. A commit cannot contain a record of its own final hash; a later commit may store the already-signed record without changing its meaning.
 
@@ -21,13 +23,15 @@ Earlier planning dates are owner assertions. This record will establish an exter
 | Purpose | Location | State |
 |---|---|---|
 | Primary artifact publication | GitHub `cjustinpearl/cjp.dev`, planned release tag `m0-baseline` | Repository public; immutable releases rechecked enabled. No tag or release created. |
-| Independent downloadable copy | Backblaze B2, dedicated public bucket `cjp-dev-public-evidence` | Provider and 365-day compliance retention accepted. Creation blocked by the account's public-bucket payment-history requirement; name not reserved. |
+| Independent downloadable copy | Backblaze B2, dedicated public bucket `cjp-dev-public-evidence` | Public access, Object Lock and 365-day compliance defaults verified on 2026-11-23. Exact bucket/version details and checks are in the [storage receipt](preservation.json). |
 | Independently published signed digest | Sigstore public transparency log through Cosign | Accepted service; entry locator exists only after real signing. No trial start entry. |
 | Independent existence-before anchor | OpenTimestamps calendar submission, later Bitcoin proof | Accepted service; no submission yet. Retain original and separately upgraded sidecars. |
 
-B2 authentication succeeded using the owner-designated local credentials. The account advertises download origin `https://f005.backblazeb2.com` and S3 endpoint `https://s3.us-east-005.backblazeb2.com`. These are observed service endpoints, **not evidence that a project bucket or file exists**. No credentials are copied into this repository. No existing bucket was changed.
+B2 bucket ID `7be29b6c88ec01aeaf2e0e1c` is verified as `cjp-dev-public-evidence`, with public download base `https://f005.backblazeb2.com/file/cjp-dev-public-evidence/` and S3 endpoint `https://s3.us-east-005.backblazeb2.com`. The owner created the bucket after completing the payment prerequisite. It was public and empty with Object Lock enabled; setup added the 365-day compliance default. No automatic deletion lifecycle rules are configured. Credentials remain outside the repository, and other buckets were not changed.
 
-Once provisioned, use this object-key structure, with actual SHA-256 values:
+A 255-byte setup probe at `preparation/2026-11-23/storage-check.txt` inherited exactly 365 days of compliance retention, through `2027-11-23T22:47:06Z`. Anonymous downloads by name and exact version ID both matched its SHA-256 and bytes. An unchanged-retention update succeeded; shortening that same probe's retention by one second returned HTTP 403 `access_denied`, and a subsequent read confirmed the original expiry. No deletion was attempted. The [receipt](preservation.json) records the version ID, download URLs and verification details. This unsigned storage probe is not the project-start record.
+
+Use this object-key structure for future evidence, with actual SHA-256 values:
 
 ```text
 projects/5b000c4f-6153-4f29-a5b3-9b0bd8f2a05a/
@@ -57,7 +61,7 @@ Save verifier outputs after checking the final published downloads. Reports and 
 
 ## Freeze and publish procedure
 
-1. Resolve the storage account prerequisite, create only the dedicated bucket, read back compliance/365-day defaults and verify a small explicitly labeled setup file by unauthenticated download and per-object retention metadata. This is a storage check, not a trial baseline or milestone.
+1. Storage setup and the labeled probe check are complete; see the [receipt](preservation.json). At publication, recheck the default configuration and verify the actual baseline artifacts' retention and anonymous downloads. A successful probe does not verify files that have not yet been uploaded.
 2. Resolve local development readiness, review the public inventory, commit preparation and require a clean worktree. Record the final commit and tree. Export its tracked files with standard `git archive`; hash those bytes and all inventory files. No reusable provenance automation is built before the baseline.
 3. Produce `baseline.json` outside that snapshot from the reviewed draft. Replace draft-only fields, proposed destinations and unresolved freeze tasks with actual values; set the current asserted freeze time. Do not insert guessed future signing times, log IDs or Bitcoin dates. Review exact bytes and public disclosure before signing.
 4. Use the installed tools and personal Google account. The commands below are instructions, **not actions already performed**. Select Google through the Sigstore browser flow; ambient CI/cloud identities are disabled.
@@ -87,4 +91,4 @@ Standard trust roots must be authenticated through the verifier's trust distribu
 
 Observed on 2026-11-13: Cosign `v3.1.4`, OpenTimestamps client `0.8.0`, Node `v26.7.0`, pnpm `11.25.0`, uv `0.12.5` and Python `3.14.7` are available. These are observed installations, not approved application runtime pins. Docker and Docker Compose are not on PATH; installation or an alternative local container setup remains to be resolved. No application compatibility/build test or VPS inspection has been performed.
 
-Preparation succeeds when the draft's snapshot hashes and criteria references verify, privacy review passes, and actual preservation locations have a verified upload/download path. Baseline witnessing succeeds only after the final signing/publication checks above. Current remaining work: resolve B2 public-bucket eligibility, provision/check storage, resolve local containers, refresh/freeze the final record, then personal signing and proof publication. CI identity pinning remains required before the first CI-signed milestone.
+Preparation succeeds when the draft's snapshot hashes and criteria references verify, privacy review passes, and actual preservation locations have a verified upload/download path. Baseline witnessing succeeds only after the final signing/publication checks above. B2 setup and probe verification are complete. Current remaining work: review the final inventory, freeze the record, personally sign, submit OTS and verify both published copies. On 2026-11-23 a stock no-mount Compose container completed on Colima with Docker client 29.10.0, engine 29.5.2 and Compose 5.8.0. The owner approved the prototype profile the same day. CI identity pinning remains required before the first CI-signed milestone.

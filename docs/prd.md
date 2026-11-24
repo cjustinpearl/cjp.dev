@@ -2,6 +2,8 @@
 
 Planning revision 0.3 · 2026-10-19 · release contract approved; operational policy details remain open as listed in [decisions](decisions.md).
 
+2026-11-23 planning addendum · owner approved the [production prototype scope and operating limits](components/README.md) for the M0 freeze.
+
 ## Product purpose
 
 cjp.dev should let a recruiter quickly understand Justin's experience, personal contributions, and engineering judgment. The site itself should supply inspectable examples of product ownership, architecture, security, performance, observability, testing, and delivery. AI provides optional follow-up grounded in reviewed evidence.
@@ -16,6 +18,18 @@ The engineering story must distinguish an implemented capability from a lab, an 
 | Hiring manager / interviewer | Examine depth and judgment | Follow contribution → project → source, inspect tradeoffs, ask focused questions. |
 | Technical reviewer | Verify engineering claims | Inspect public source, tests, architecture, pipeline demonstrations and verifiable delivery records. |
 | Owner | Maintain evidence with little friction | Import source material through CLI, review it, and publish through Git. |
+
+## Production prototype
+
+The priority-zero outcome is a tested, invite-accessible prototype on `https://cjp.dev`. A guest can sign in, ask about Justin's work, inspect the sources and the boundaries each integration operated within, and follow a build timeline back to downloadable evidence. The public portfolio remains usable during model or integration outages.
+
+| Product requirement | Observable outcome |
+|---|---|
+| PRD-P0-01 | An invited guest signs in from an ordinary browser, asks a live question against owner-approved evidence, and receives a cited answer or an explicit evidence limitation. |
+| PRD-P0-02 | A live run shows the runtime invoking a first-party, read-only career-evidence MCP server and delegating claim review to a separate model-backed agent. The inspector shows actual integration versions, outcomes and boundaries. |
+| PRD-P0-03 | A guest can inspect a reproducible evaluation report and a build timeline that connects the witnessed baseline, checks, actual activation and owner acceptance to the running build. |
+
+The [prototype SRS](srs.md#production-prototype-acceptance) defines the separately labeled, owner-approved prototype. The [profile and bounded deferrals](components/README.md) enter the M0 inventory. The [first public release](#first-public-release) below remains the fuller product contract. A deployed prototype earns only its own acceptance. After the priority-zero path is verified, extend existing product capabilities in owner-approved priority order.
 
 ## First public release
 

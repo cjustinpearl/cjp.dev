@@ -1,0 +1,32 @@
+sequenceDiagram
+  autonumber
+  actor Guest
+  participant Runtime as Runtime and access policy
+  participant Catalog as Approved capability catalog
+  participant MCP as Career evidence MCP server
+  participant Draft as Draft model provider
+  participant Review as Evidence review agent
+  participant OTel as Private OpenTelemetry
+
+  Guest->>Runtime: Question with bounded session context
+  Runtime->>Runtime: Check grant and reserve draft plus review budgets
+  alt Authorized and reserved
+    Runtime->>Catalog: Pin policy, contracts and allowed bindings
+    Runtime->>MCP: Discover approved tool and fetch evidence for pinned corpus
+    MCP-->>Runtime: Versioned source IDs and permitted excerpts
+    alt Evidence available and within limits
+      Runtime->>Draft: Bounded question and published evidence
+      Draft-->>Runtime: Draft and source IDs
+      Runtime->>Runtime: Validate draft schema and citation scope
+      opt Draft passes citation checks
+        Runtime->>Review: Scoped draft, evidence, versions and deadline
+        Note over Review: One bounded model call
+        Review-->>Runtime: Verdict and bounded reason codes
+      end
+    end
+  else Denied or budget unavailable
+    Note over Runtime: Skip capability and provider calls
+  end
+  Runtime->>Runtime: Decide answer or abstention and reconcile spend
+  Runtime-->>Guest: Final outcome and session-safe answer inspector
+  Runtime-->>OTel: Correlated, sanitized stage evidence

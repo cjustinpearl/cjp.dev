@@ -1,8 +1,8 @@
 # cjp.dev — living résumé
 
-Public planning repository · updated 2026-11-13 · baseline not yet signed; no application implemented or deployed
+Public planning repository · updated 2026-11-23 · baseline not yet signed; no application implemented or deployed
 
-A fast public portfolio with evidence-backed career Q&A, an asynchronous content pipeline, and independently verifiable publication and delivery records.
+A fast public portfolio with evidence-backed career Q&A, an asynchronous content pipeline, and independently verifiable publication and delivery records. The approved [prototype profile](docs/components/README.md) adds a bounded agent runtime, a first-party MCP integration, and inspectable evaluation and delivery evidence.
 
 ## Read first
 

@@ -186,19 +186,26 @@
       "publication_status": "not-created"
     },
     "independent_archive": {
-      "status": "selected-creation-blocked-no-payment-history",
+      "status": "configured-and-probe-verified",
       "provider": "Backblaze B2",
-      "bucket_name_availability_verified": false,
-      "bucket_id": null,
-      "public_download_origin": null,
+      "bucket_name_availability_verified": true,
+      "bucket_id": "7be29b6c88ec01aeaf2e0e1c",
+      "public_download_origin": "https://f005.backblazeb2.com",
       "path_template": "projects/{project_uuid}/records/sha256/{baseline_sha256}/",
-      "bucket_name_candidate": "cjp-dev-public-evidence",
       "object_lock_mode": "compliance",
       "retention_days": 365,
       "selection_date_owner_asserted": "2026-11-13",
       "account_download_origin_observed": "https://f005.backblazeb2.com",
       "account_s3_endpoint_observed": "https://s3.us-east-005.backblazeb2.com",
-      "provisioning_note": "Authentication succeeded; public bucket creation returned no_payment_history. No bucket was created and no existing buckets were changed."
+      "provisioning_note": "Owner resolved payment eligibility and created the public bucket. On 2026-11-23, configured compliance/365-day defaults and verified inherited probe retention, anonymous downloads and rejection of shortening. Baseline artifacts are not yet published.",
+      "bucket_name": "cjp-dev-public-evidence",
+      "public_bucket_base_url": "https://f005.backblazeb2.com/file/cjp-dev-public-evidence/",
+      "s3_endpoint": "https://s3.us-east-005.backblazeb2.com",
+      "configuration_verified_on": "2026-11-23",
+      "setup_receipt": {
+        "path": "docs/baseline/preservation.json",
+        "sha256": "6877ff430527f04ebf28925d1a170ec3a8365adbd3e0e34c515a322448bbe73c"
+      }
     },
     "independent_digest_publication": {
       "service": "Sigstore public transparency log",
@@ -208,7 +215,7 @@
     "discovery": "Publish the project ID, baseline digest and exact object-version locators in the release and independent archive receipt. A mutable latest pointer is discovery only, never the trust anchor."
   },
   "freeze_requirements": [
-    "Confirm preservation provider, retention and working independent download destination; record exact endpoints, not proposed names.",
+    "Recheck the configured independent archive at freeze and verify retention and public downloads of the actual baseline artifacts; the setup probe alone does not establish those future results.",
     "Resolve local container-runtime readiness and check compatible development runtimes; record checks without claiming an application build.",
     "Commit and review the final public planning state including baseline preparation; require clean worktree and public/private inventory review.",
     "Create a tracked-files-only Git archive of that exact commit, recompute full file inventory and contract digests, and record archive byte length and SHA-256.",

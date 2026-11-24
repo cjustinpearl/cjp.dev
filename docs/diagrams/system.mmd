@@ -9,9 +9,16 @@ flowchart TB
     R["RabbitMQ<br/>private task broker"]
     PY["Python / Celery worker<br/>bounded ingestion jobs"]
     F[("Private input / candidate files<br/>never public web assets")]
+    MCP["Private career evidence MCP server"]
+    REVIEW["Private evidence review agent"]
     T["OpenTelemetry export<br/>destination / retention TBD"]
     C --> W
     W --> P
+    W --> MCP
+    W --> REVIEW
+    MCP -->|published evidence only| P
+    MCP -. "sanitized telemetry" .-> T
+    REVIEW -. "sanitized telemetry" .-> T
     R --> PY
     PY --> P
     PY --> F
@@ -41,6 +48,7 @@ flowchart TB
   P -. "encrypted backups" .-> BACK
   A -. "independent copy" .-> MIRROR
   W -->|HTTPS| MAIL
-  W -->|bounded HTTPS streaming| LLM
+  W -->|bounded draft call| LLM
+  REVIEW -->|bounded review call| LLM
   W -. "later: transactional outbox relay" .-> K
   V -->|independent download and verify| A

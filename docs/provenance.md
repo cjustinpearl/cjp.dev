@@ -1,6 +1,6 @@
 # Evidence, timestamps and future transparent matching
 
-Planning revision 0.5 · 2026-11-13 · baseline draft prepared; public repository and immutable-release setting verified; no baseline signed. B2 archive policy selected; provisioning and exact CI workflow/ref remain outstanding.
+Planning revision 0.5 · 2026-11-13 · baseline draft prepared; public repository and immutable-release setting verified; no baseline signed. B2 archive setup was verified on 2026-11-23. The exact CI workflow/ref and signed baseline remain outstanding.
 
 ## What the design can establish
 
@@ -26,6 +26,8 @@ Immediately before implementation, create a baseline with existing tools: off-th
 Baseline contents: stable project ID; approved scope/criteria digest; baseline Git commit/tree and artifact inventory; planning dates as owner assertions; existing content and reused tools; explicit exclusions; declared AI assistance. No private source documents or their raw text are submitted to a public log.
 
 The [M0 preparation record](baseline/README.md) contains the concrete draft and storage setup state. Its review snapshot must be refreshed to the final committed preparation before signing. Final record bytes are an external release asset, so they do not attempt to contain their own Git commit hash.
+
+Bind the owner-approved [prototype profile](srs.md#production-prototype-acceptance) and its criteria to the M0 snapshot. Prototype evidence links the exact evaluation report, running build, corpus, policy and relevant integration revisions. Each checks-passed, deployment and owner-acceptance record names the profile it covers. The timeline projects actual records and evidence status; a prototype milestone makes no claim of full-release acceptance.
 
 A record is a versioned JSON file signed as **its exact saved bytes**. Hash referenced artifacts with SHA-256. Preserve those bytes; verification must not parse and reserialize before checking the signature. There is no need to invent a new signature or canonicalization scheme.
 

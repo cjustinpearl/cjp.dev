@@ -2,6 +2,8 @@
 
 Planning revision 0.6 · 2026-11-13 · M0 baseline draft and preservation plan prepared; baseline not yet signed. No project agents, custom skills, CI jobs or application code have been created.
 
+2026-11-23 planning addendum · establish the time-boxed production prototype's component specs, ownership and milestone plan in the build kickoff.
+
 ## Smallest useful working arrangement
 
 Use the four responsibilities below as bounded assignments. One agent may perform several sequentially. Parallel work is useful once interfaces and file ownership are settled; it is not a requirement to keep four agents running. The owner retains product decisions and release acceptance.
@@ -14,6 +16,8 @@ Use the four responsibilities below as bounded assignments. One agent may perfor
 | Verification / release reviewer | Independent requirement checks, failure exercises, browser review, release/proof validation | Exact candidate commit/build, criteria revision, implementation evidence | Findings tied to requirements, reproducible failures, verified release evidence or precise unmet criteria | Reviews the integrated revision; signer/CI checks supply cryptographic evidence, not the reviewer's prose. |
 
 For complex database or visual work, the relevant role can become a narrower assignment. Do not add a permanent specialist merely because a technology exists in the stack. Broad architectural uncertainty returns to the integrator and owner before a changed contract is implemented.
+
+For the [prototype](srs.md#production-prototype-acceptance), make ownership explicit for runtime/access, the MCP server, the review agent, evaluation and release, and the visitor experience. Apply these as bounded assignments under the existing responsibilities. The owner approves interfaces, privacy boundaries, calibration rubrics, budget and acceptance. Keep independent verification separate from implementing changes and tuning evaluation policy. The integrator owns shared contracts and the work queue, and coordinates any interface or schema change before parallel work resumes.
 
 ## Skill policy
 
@@ -41,7 +45,11 @@ Proposed layout after implementation begins:
 site/                         public repository root
   AGENTS.md                   concise working conventions
   docs/                       requirements, decisions, diagrams, handoffs
+    components/               one indexed specification per live component
+    work/                     durable work items, review findings and resumption state
   apps/web/                   SvelteKit app
+  services/career-evidence/   private MCP capability
+  services/evidence-review/   private review capability
   packages/contracts/         public data/API/event schemas as needed
   pipeline/                   Python CLI and Celery tasks
   db/migrations/              one authoritative migration sequence
@@ -58,6 +66,8 @@ Use short-lived branches and isolated worktrees for parallel assignments. Agree 
 
 Each work item records: objective; requirement IDs; accepted/proposed decisions; dependencies; owned paths; interface version; success evidence; exclusions; current commit; status; next action. A handoff includes what changed, checks actually run and outcomes, known failures and unresolved decisions. Never label unrun checks as passed.
 
+Maintain one component index and one work index so an owner or a fresh agent can resume from disk. Each component spec records scope, interfaces and fixtures, dependencies, allowed data, failure and rollback behavior, telemetry, owner, and requirement-to-test references. Work records link to those specs and their actual revisions. Link public-safe evidence from the repository and keep private interview notes, identities, raw inputs and credentials outside it. Create paths as active slices need them.
+
 ## Repeatable work loop
 
 1. **Define:** choose a small vertical slice and observable success criteria. Settle cross-component interfaces before splitting work.
@@ -70,6 +80,8 @@ Each work item records: objective; requirement IDs; accepted/proposed decisions;
 8. **Hand off:** persist a concise status and next step so a new session can resume without reconstructing intent.
 
 ## Delivery chunks
+
+Use the M0 witness for both release profiles. Before freezing it, record the owner-approved prototype criteria and any staged deferrals alongside the full-release requirements. The prototype can combine the smallest portions of the existing delivery chunks needed for an end-to-end slice. Its checks, activation and owner acceptance are distinct records tagged to that profile. The table below describes the full build; the kickoff sets the prototype milestones and cut order.
 
 | Milestone | Work | Exit evidence / dependencies |
 |---|---|---|
@@ -110,7 +122,7 @@ Repository preparation is complete as recorded below. The [baseline draft and pr
 | Public inventory and licensing | Reviewed 15 regular text files: planning documents, four Mermaid diagrams, `.gitignore`, `LICENSE`, and `LICENSE-SCOPE.md`. No private career inputs, symlinks or unexpected files. Credential/private-path scan passed. MIT covers original software and associated technical documentation; career content, personal assets and third-party material are excluded. |
 | Immutable releases | Enabled through GitHub's repository API; a subsequent read returned `enabled: true`. This is configuration verification, not a completed release or signed-proof test. |
 | Baseline and proofs | An unsigned [baseline draft](baseline/baseline.draft.json) now identifies the project, original 15-file planning snapshot and SHA-256 inventory. Its start time is null; final freeze must include subsequent preparation. No signature, OpenTimestamps submission, tag or release created. |
-| Independent preservation | Public B2 archive and 365-day compliance retention selected. API authentication succeeded, but creation returned `no_payment_history`; no project bucket was created or existing bucket changed. Sigstore is the selected external signed-digest publication service; no log entry exists yet. |
+| Independent preservation | Updated 2026-11-23: the owner resolved the payment prerequisite and created the public B2 bucket. Compliance/365-day defaults, inherited probe retention, anonymous downloads and rejection of shortened retention are verified in the [storage receipt](baseline/preservation.json). Sigstore is the selected external signed-digest publication service; no baseline log entry exists yet. |
 | Development readiness | Node `v26.7.0`, pnpm `11.25.0`, uv `0.12.5`, Python `3.14.7` are on PATH. Docker/Compose are not. These observations do not pin application versions or establish dependency compatibility. |
 
 Installations used `brew install cosign` and `uv tool install opentimestamps-client`. Unrelated Homebrew upgrades/cleanup were disabled. Both commands are available on PATH. These are executable/readiness checks, not an end-to-end signing or Bitcoin-anchor verification. Personal Google authentication is deferred until the reviewed baseline is ready to sign. Sources: [Cosign installation](https://docs.sigstore.dev/cosign/system_config/installation/) and [OpenTimestamps client](https://github.com/opentimestamps/opentimestamps-client).

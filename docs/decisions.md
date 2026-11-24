@@ -2,6 +2,8 @@
 
 Planning revision 0.6 · 2026-11-13 · baseline draft prepared; independent archive policy selected; no start record signed. Approval of a technology is not evidence that it is implemented.
 
+2026-11-23 planning addendum · owner requested a time-boxed production prototype. The owner approved its [scope, deferrals and operating limits](components/README.md). Detailed platform bindings await interface review.
+
 ## Accepted decisions
 
 | ID | Decision | Consequence |
@@ -18,7 +20,7 @@ Planning revision 0.6 · 2026-11-13 · baseline draft prepared; independent arch
 | D10 | Cosign with Sigstore's public transparency log plus OpenTimestamps | Use independently verifiable records; distinguish signed assertions from factual truth. |
 | D11 | Witness the baseline immediately before implementation | Planning and existing content are disclosed as prior work. No retroactive start claim. |
 | D12 | Record checks-passed and owner-accepted milestones separately | Acceptance can occur later without rewriting the earlier record. |
-| D13 | Earliest release meeting agreed criteria; no fixed deadline | Release scope and requirements are versioned; scope changes remain visible. |
+| D13 | First full public release when agreed criteria pass | Release scope and requirements are versioned. The separately scoped prototype has its own delivery target under D25. |
 | D14 | Public repository; Markdown documents, embedded Mermaid and `.mmd` sources | Start the public repository inside `site/`; keep private parent-workspace material outside it. |
 | D15 | Messaging and pipelines are the learning priority; security operations are lower priority | Kafka follows launch; Wazuh/Shuffle are optional subsequent labs. |
 | D16 | Hosting is flexible; existing Hetzner CPX31: 4 vCPU, 8 GB RAM, 160 GB local disk, us-west, Ubuntu 24.04.4 LTS | Owner reports nothing substantial currently running, as of 2026-10-12. Verify live resource availability before deployment. |
@@ -29,7 +31,17 @@ Planning revision 0.6 · 2026-11-13 · baseline draft prepared; independent arch
 | D21 | MIT for original application code and associated technical documentation | Added [MIT license](../LICENSE) and [content exclusions](../LICENSE-SCOPE.md) on 2026-11-13. Personal résumé material, personal assets and third-party content retain separate rights/notices. |
 | D22 | GitHub immutable release assets plus an independent off-host copy; independently publish the baseline digest | Immutable releases enabled and verified through GitHub's API on 2026-11-13. No release published yet. B2 is selected under D24; the signed digest will be recorded in Sigstore's public log. Preserve exact record bytes, log locators, independent copies and separate versioned proof upgrades. |
 | D23 | Verified Sigstore evidence and OpenTimestamps submission required before implementation | Deployment and owner acceptance may proceed while Bitcoin anchoring is pending. Display that state; fully verified status requires successful anchoring. |
-| D24 | Dedicated public Backblaze B2 evidence archive with 365-day compliance-mode Object Lock | Selected on 2026-11-13 using an existing account. Public-bucket creation is currently blocked by Backblaze's payment-history prerequisite. Protected versions cannot be deleted or have retention shortened during the period; extension is possible. No automatic deletion lifecycle is planned. Private operational backup storage remains a separate decision. |
+| D24 | Dedicated public Backblaze B2 evidence archive with 365-day compliance-mode Object Lock | Selected on 2026-11-13. After the owner resolved payment eligibility and created the bucket, configuration and probe verification completed on 2026-11-23; see the [storage receipt](baseline/preservation.json). Defaults are compliance/365 days with no automatic deletion lifecycle. A test upload inherited retention, anonymous downloads matched, and shortening was rejected. Private operational backup storage remains a separate decision. |
+| D25 | Prioritize a tested, invite-accessible production prototype with inspectable federation, evaluation and a witnessed build timeline | Owner approved the [prototype profile](components/README.md) and its bounded deferrals on 2026-11-23. Include them in the M0 freeze. The published proof identifies the profile that passed. |
+
+## Proposed prototype decisions
+
+| ID | Proposed decision | Evidence and tradeoff |
+|---|---|---|
+| A01 | Keep orchestration in SvelteKit. Run separate private MCP evidence and model-backed review processes on the selected host behind versioned capability contracts. | Demonstrates replaceable integration boundaries with one host and a single operator. Validate protocol compatibility, resource overhead and private access. Carry A2A as a possible later contract binding. |
+| A02 | Start with bounded ephemeral context and deterministic routing/gates. Buffer answer text until citation validation and review complete. | Authority and failure behavior are testable. Measure the additional model call's cost, latency and effect on coverage. |
+| A03 | Use individual mailbox-verified invitations and a signed, manually reviewed seed corpus for the prototype. | Exercises the real visitor path and publication controls while the full eligibility flow and async extraction pipeline can follow in their existing slices. |
+| A04 | Keep proof gates, reserve spend per stage in one atomic authorization, and compare the live policy against a single-draft baseline offline. | Keeps launch claims traceable, preserves the user budget, and makes the quality/speed tradeoff inspectable. Treat B2 readiness and signing as explicit prerequisites. |
 
 ## Accepted implementation defaults
 
@@ -53,18 +65,20 @@ P01–P10 were approved on 2026-10-19. Their original IDs are retained for trace
 | ID | Resolution |
 |---|---|
 | U01 | On 2026-10-12, owner confirmed that US$20–50/month covers additional project spending outside the existing Hetzner bill. The current base hosting charge is not needed to allocate this budget; check it before proposing any hosting change. |
+| U09 | On 2026-11-23 the owner approved DEMO-01–07, the prototype deferrals and the [exact limits](components/README.md), including US$16 guest and US$4 evaluation within a US$20 ceiling. |
 
 ## Decisions still needed
 
 | ID | Unknown | Resolve by | Impact |
 |---|---|---|---|
 | U02 | Live available RAM/disk/CPU and existing ingress configuration | Before deployment | Owner reports no substantial current workload; verify the proposed resource envelope and preserve any existing services. |
-| U03 | Domain allowlist, invitation policy, grant allowance and duration | Before access feature acceptance | These are operational policy, not identity guarantees. |
+| U03 | Full-release domain allowlist and eligibility policy. Prototype invitation and grant limits are approved. | Before access feature acceptance | These are operational policy, not identity guarantees. |
 | U04 | Verify the selected personal sign-in flow and exact issuer policy; specify the later CI workflow/ref allowlist | Personal policy before baseline publication; CI policy before its first signed milestone | Repository and Google account are selected (D18–D19). Verify against explicit expected identities, not identities supplied by an untrusted bundle. |
 | U05 | Publication-approved résumé and initial case studies | Before corpus release | Existing private briefs are inputs, not authorization to publish. |
 | U06 | Exact model, email provider, edge provider, telemetry destination, backup destination | Before integration / release acceptance | Document data handling, costs, secrets, and failure behavior. |
-| U07 | Operational numeric limits, retention, service caps and performance measurement profiles | Before their implementation acceptance | Release quality/performance objectives are accepted under D20. Explicit policy examples and resource ceilings remain proposals. |
+| U07 | Remaining operational and full-release limits, service caps and performance measurement profiles beyond the approved prototype policy | Before their implementation acceptance | Release quality/performance objectives are accepted under D20. Explicit policy examples and resource ceilings remain proposals. |
 | U08 | Whether runtime job-match results need signatures, and who independently verifies them | Before the later matching milestone | Launch signs public knowledge; per-result signing needs a separate privacy and signer design. |
+| U10 | MCP SDK/protocol revision, capability bindings and private-caller credentials; model/policy settings for both stages | Before component integration | Pin actual compatible versions and show that unauthorized, disabled and mismatched capabilities fail closed. |
 
 The owner has resolved the baseline policy decisions, budget boundary and reported workload questions. U02 is a deployment verification task. Remaining implementation details can be resolved with concrete options during the relevant delivery slice; they do not require another broad architecture review before M0.
 
@@ -80,7 +94,7 @@ On 2026-10-19, the owner approved the remaining recommendations below. Repositor
 | Evidence publication | Use GitHub immutable release assets plus an independent off-host copy; publish the baseline digest independently of the mutable site. Later proof upgrades are additional artifacts. |
 | Proof completion | Require verified Sigstore evidence and OpenTimestamps submission before implementation. Permit deployment and owner acceptance while Bitcoin anchoring is pending, display that state, and mark a proof fully verified only after successful anchoring. This replaces the earlier proposed rule requiring completed anchoring for release acceptance. |
 
-Accepted choices have been reconciled into the PRD, SRS, architecture and provenance documents. Public repository preparation and GitHub account verification are complete as recorded in [M0 readiness](delivery-workflow.md#m0-readiness-record--2026-11-13). The [concrete baseline draft and preservation plan](baseline/README.md) are prepared. Storage provisioning and local container readiness remain before the final freeze and selected signing flow. No measured start event has been recorded. Provider choices, access policy details, content approvals and other retention proposals remain scheduled for their relevant implementation slices.
+Accepted choices have been reconciled into the PRD, SRS, architecture and provenance documents. Public repository preparation and GitHub account verification are complete as recorded in [M0 readiness](delivery-workflow.md#m0-readiness-record--2026-11-13). The [concrete baseline draft and preservation plan](baseline/README.md) are prepared. The archive setup and local stock-container smoke have passed. The final inventory, personal signing and independent publication checks remain. No measured start event has been recorded. Provider choices, access policy details, content approvals and other retention proposals remain scheduled for their relevant implementation slices.
 
 ## Budget and capacity update — 2026-10-12
 
@@ -88,7 +102,7 @@ Recommend the existing CPX31 for launch, with live capacity verification under U
 
 The current [Hetzner US price table](https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/) lists CPX31 at US$73.49/month excluding IPv4 and tax, compared with the previous US$24.99. This is not the owner's confirmed bill. Existing servers can retain legacy prices; [rescaling and some other actions can change that](https://docs.hetzner.com/cloud/billing/faq/#which-customer-actions-cause-servers-with-legacy-prices-to-switch-to-the-current-pricing). Check actual billing before recommending a resize or replacement.
 
-The US$20–50 monthly target covers additional project spending; the existing Hetzner bill is outside it. Propose starting with US$10 for AI, up to US$5 for email/off-host backups/other services, and US$5 reserve. This targets the lower end of the range and leaves the remaining US$30 unallocated until actual need is demonstrated. These are spending allocations, not provider quotes or approved service caps. Newly enabled paid services count toward the additional budget. Report incremental project spend separately from full operating cost when the latter is known.
+The US$20–50 monthly target covers additional project spending; the existing Hetzner bill is outside it. The prototype now has an approved US$20 AI ceiling. The earlier proposal for up to US$5 for email/off-host backups/other services and US$5 reserve remains provisional. Confirm other service allocations against the overall target. Newly enabled paid services count toward the additional budget. Report incremental project spend separately from full operating cost when the latter is known.
 
 Include bounded live evaluations and ingestion model calls in the AI allowance, not only recruiter chat. Keep ordinary CI tests on provider fakes. Enforce the eventual AI cap in the application; provider billing alerts alone are not a hard spending limit. Paid email/telemetry plans are not assumed necessary until provider selection. Off-host, restorable backups remain required regardless of optional VPS snapshots. Hetzner's optional automatic backups cost 20% of the server price; include that cost only if selected ([billing reference](https://docs.hetzner.com/cloud/billing/faq/)).
 

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "status": "verified",
+  "verification_date": "2026-11-23",
+  "project_id": "urn:uuid:5b000c4f-6153-4f29-a5b3-9b0bd8f2a05a",
+  "provider": "Backblaze B2",
+  "bucket_name": "cjp-dev-public-evidence",
+  "bucket_id": "7be29b6c88ec01aeaf2e0e1c",
+  "bucket_type": "allPublic",
+  "public_download_origin": "https://f005.backblazeb2.com",
+  "public_bucket_base_url": "https://f005.backblazeb2.com/file/cjp-dev-public-evidence/",
+  "s3_endpoint": "https://s3.us-east-005.backblazeb2.com",
+  "object_lock_enabled": true,
+  "default_retention": {
+    "mode": "compliance",
+    "period": {
+      "duration": 365,
+      "unit": "days"
+    }
+  },
+  "lifecycle_rules": [],
+  "bucket_revision": 3,
+  "probe": {
+    "file_name": "preparation/2026-11-23/storage-check.txt",
+    "file_id": "4_z7be29b6c88ec01aeaf2e0e1c_f103df66a6b5a63a3_d20261123_m224706_c005_v0501052_t0018_u01795474026365",
+    "bytes": 255,
+    "sha256": "3a400fea8e75a0c6f19d7743f2eb085c44f3bb87de1c93cb011adb79d3a7bb10",
+    "content_utf8": "cjp.dev public evidence storage check\nProject ID: urn:uuid:5b000c4f-6153-4f29-a5b3-9b0bd8f2a05a\nPurpose: verify anonymous downloads and inherited 365-day compliance retention.\nThis setup probe is not a signed baseline, milestone, or implementation start.\n",
+    "retention_override_on_upload": false,
+    "upload_timestamp_ms": 1795474026365,
+    "retention": {
+      "mode": "compliance",
+      "retainUntilTimestamp": 1827010026365
+    },
+    "retain_until_utc": "2027-11-23T22:47:06Z",
+    "observed_retention_days": 365.0,
+    "retention_update_control": {
+      "operation": "set the existing retention value unchanged",
+      "http_status": 200,
+      "retention_unchanged": true
+    },
+    "shortening_rejection": {
+      "operation": "shorten probe retention by one second",
+      "http_status": 403,
+      "code": "access_denied",
+      "caller_has_write_file_retentions": true,
+      "positive_control_succeeded": true,
+      "retention_unchanged_after_request": true
+    },
+    "anonymous_downloads": {
+      "by_name": {
+        "url": "https://f005.backblazeb2.com/file/cjp-dev-public-evidence/preparation/2026-11-23/storage-check.txt",
+        "http_status": 200,
+        "authorization_header_sent": false,
+        "bytes_match": true,
+        "sha256": "3a400fea8e75a0c6f19d7743f2eb085c44f3bb87de1c93cb011adb79d3a7bb10",
+        "file_id_matches": true
+      },
+      "by_version_id": {
+        "url": "https://f005.backblazeb2.com/b2api/v4/b2_download_file_by_id?fileId=4_z7be29b6c88ec01aeaf2e0e1c_f103df66a6b5a63a3_d20261123_m224706_c005_v0501052_t0018_u01795474026365",
+        "http_status": 200,
+        "authorization_header_sent": false,
+        "bytes_match": true,
+        "sha256": "3a400fea8e75a0c6f19d7743f2eb085c44f3bb87de1c93cb011adb79d3a7bb10",
+        "file_id_matches": true
+      }
+    }
+  },
+  "baseline_publication_status": "not-signed-or-timestamped",
+  "notes": [
+    "This is an unsigned storage setup observation, not an implementation-start record.",
+    "Public availability can change independently of version retention. Keep exact version IDs and independent hashes."
+  ]
+}

@@ -7,7 +7,9 @@ sequenceDiagram
   participant Proof as Sigstore / OpenTimestamps
   participant Store as Artifacts / Postgres
   actor Visitor
-  participant App as SvelteKit
+  participant App as SvelteKit runtime
+  participant MCP as Private career evidence MCP server
+  participant Reviewer as Private evidence review agent
   participant External as Email / Model providers
   Owner->>CLI: Submit private input and requested transform
   CLI->>Queue: Job ID, input reference, pipeline version
@@ -27,11 +29,18 @@ sequenceDiagram
   alt Denied or budget unavailable
     App-->>Visitor: Explain access / allowance state
   else Authorized and reserved
-    App->>Store: Retrieve from one signed public corpus version
-    App->>External: Bounded model request with selected evidence
-    External-->>App: Stream / completion / failure
-    App-->>Visitor: Provisional stream then final sources and safe timings
+    App->>MCP: Discover and invoke read-only search on pinned corpus
+    MCP-->>App: Approved evidence or bounded failure
+    opt Evidence is available
+      App->>External: Draft with approved evidence
+      External-->>App: Bounded draft or failure
+      opt Draft passes citation checks
+        App->>Reviewer: Delegate scoped review
+        Reviewer-->>App: Bounded verdict or failure
+      end
+    end
     App->>Store: Reconcile usage, store metadata only
+    App-->>Visitor: Reviewed answer or abstention with inspector
   end
   Note over Git,Proof: Baseline uses existing tools before implementation, later CI automates records
   Owner->>Git: Accept checks-passed milestone by digest

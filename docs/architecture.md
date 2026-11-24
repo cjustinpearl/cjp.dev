@@ -2,9 +2,11 @@
 
 Planning revision 0.3 · 2026-10-19 · implementation defaults accepted; deployment unverified · [decision register](decisions.md).
 
+2026-11-23 planning addendum · proposed [agent runtime](#agent-runtime-and-federated-integrations) for the production prototype.
+
 ## Boundaries and intent
 
-Use one SvelteKit web application, one PostgreSQL service, and a Python content toolchain with RabbitMQ/Celery. Chat is synchronous/streaming HTTP and does not wait on the ingestion queue. The owner CLI is the initial Celery producer; TypeScript does not implement Celery's task protocol. Public GraphQL reads only published evidence. Approved content and publication artifacts bridge private preparation and public delivery.
+Use one SvelteKit web application, one PostgreSQL service, and a Python content toolchain with RabbitMQ/Celery. Chat is synchronous/streaming HTTP and does not wait on the ingestion queue. The prototype places the agent runtime in SvelteKit and runs two private capability processes on the same host. Repo and deployment share a release target while the two capabilities retain separate contracts and permissions. The owner CLI is the initial Celery producer; TypeScript does not implement Celery's task protocol. Public GraphQL reads only published evidence. Approved content and publication artifacts bridge private preparation and public delivery.
 
 Diagrams are skeletons, not deployed-state claims. Labels `PROPOSED`, `TBD`, and `LATER` identify unresolved placement or deferred components. Arrows represent permitted logical flows, not unrestricted network access. Standalone `.mmd` files are the diagram editing source; embedded copies below must remain identical.
 
@@ -24,9 +26,16 @@ flowchart TB
     R["RabbitMQ<br/>private task broker"]
     PY["Python / Celery worker<br/>bounded ingestion jobs"]
     F[("Private input / candidate files<br/>never public web assets")]
+    MCP["Private career evidence MCP server"]
+    REVIEW["Private evidence review agent"]
     T["OpenTelemetry export<br/>destination / retention TBD"]
     C --> W
     W --> P
+    W --> MCP
+    W --> REVIEW
+    MCP -->|published evidence only| P
+    MCP -. "sanitized telemetry" .-> T
+    REVIEW -. "sanitized telemetry" .-> T
     R --> PY
     PY --> P
     PY --> F
@@ -56,7 +65,8 @@ flowchart TB
   P -. "encrypted backups" .-> BACK
   A -. "independent copy" .-> MIRROR
   W -->|HTTPS| MAIL
-  W -->|bounded HTTPS streaming| LLM
+  W -->|bounded draft call| LLM
+  REVIEW -->|bounded review call| LLM
   W -. "later: transactional outbox relay" .-> K
   V -->|independent download and verify| A
 ```
@@ -78,7 +88,7 @@ These are starting container memory ceilings to validate, not measured consumpti
 | Caddy | 256 MiB | Coordinate ports and routing with any existing ingress. |
 | Telemetry exporter / optional collector | 256 MiB | Bounded buffers; no full local observability cluster. |
 
-The proposed ceilings total 4.75 GiB, leaving roughly 2–3 GiB of nominal host capacity for OS/cache, deployment and backup peaks. No substantial competing workload is currently reported. Measure actual usable RAM before choosing limits and review the allocation if another project is deployed later. Confirm recovery from a worker memory-limit termination and test chat/retrieval with ingestion active.
+The listed ceilings total 4.75 GiB before sizing the private MCP and review processes. Measure both alongside the app and Postgres before selecting limits. Defer or run ingestion on demand if the combined services leave insufficient headroom for the OS, deployments or recovery. No substantial competing workload is currently reported. Measure actual usable RAM before choosing limits and review the allocation if another project is deployed later. Confirm recovery from a worker memory-limit termination and test chat/retrieval with ingestion active.
 
 For RabbitMQ, initially evaluate an absolute 512 MiB memory alarm below its 1 GiB container ceiling. The alarm throttles publishers; it is not a hard memory cap, and transient overhead needs headroom ([RabbitMQ guidance](https://www.rabbitmq.com/docs/memory)).
 
@@ -96,14 +106,16 @@ flowchart LR
     G["PROPOSED: GraphQL Yoga<br/>bounded public evidence queries"]
     AUTH["Authentication + mailbox eligibility"]
     GRANT["Access grant + revocation<br/>atomic usage / spend reservation"]
-    CHAT["Chat orchestrator<br/>stream, deadline, finalize usage"]
-    RET["Retrieval<br/>pin one published corpus version"]
+    CHAT["Runtime harness<br/>pin corpus, policy and capability versions"]
+    REG["Approved capability catalog<br/>scope, schema and invocation limits"]
     CITE["Citation resolver / source inspector<br/>signature status separate from truth"]
     META["Operational metadata / telemetry<br/>no transcript retention"]
   end
   DB[("Postgres: auth / grants / usage")]
   KB[("Postgres: published knowledge<br/>full-text first; pgvector conditional")]
   MODEL["Hosted LLM"]
+  MCP["Private career evidence MCP server"]
+  EREV["Private evidence review agent"]
   CLI["Owner Python CLI"]
   MQ["RabbitMQ"]
   WORK["Celery ingestion<br/>extract, normalize, candidate checks"]
@@ -116,10 +128,13 @@ flowchart LR
   B --> CHAT
   CHAT --> GRANT
   GRANT --> DB
-  CHAT --> RET
-  RET --> KB
+  CHAT --> REG
+  CHAT -->|discover and invoke| MCP
+  MCP -->|read-only retrieval| KB
   G --> KB
-  CHAT --> MODEL
+  CHAT -->|draft| MODEL
+  CHAT -->|typed delegation| EREV
+  EREV -->|review| MODEL
   CHAT --> CITE
   CITE --> KB
   CHAT --> META
@@ -151,13 +166,76 @@ Start retrieval with PostgreSQL full-text search and explicit metadata filters. 
 | Browser → public pages | Prerendered HTML / static assets | Core résumé and contact useful without JavaScript or chat. |
 | Browser → GraphQL | Read-only evidence queries, bounded pagination, approved operation set | No private candidate, identity, usage or telemetry schema exposure. |
 | Browser → authentication | Magic-link request and deliberate confirmation/redeem | Plain link tokens never enter logs; requests have generic responses and layered rate limits. |
-| Browser → chat | Authenticated POST, streamed progress/text, completion with source IDs and corpus digest | Browser submits text, not privileged model tools; server bounds history and cost. |
+| Browser → chat | Authenticated POST, bounded status events, completion with source IDs and corpus digest | The prototype buffers factual answer text until checks and review pass. |
+| Runtime → capability integrations | Private MCP discovery/invocation and a typed review request/result | Versioned capability catalog; explicit caller identity, data class, deadline and pins. |
 | Owner CLI → broker | Native Celery protocol, JSON arguments containing job IDs and private input references | Reject unsafe serializers; private authenticated transport. |
 | Worker → candidate store | Idempotent result keyed by input digest, transformation version and options | An extraction retry cannot publish or duplicate a corpus. |
 | CI → deployment | Versioned release manifest, build and corpus digests, proof bundles | Verify expected identity and immutable bytes before activation. |
 | Future producer → Kafka | Versioned sanitized event envelope | Introduce outbox with the Kafka slice; never rely on events for live authorization or spending. |
 
 Exact routes and schema field names are implementation contracts to approve in the relevant slice, not frozen API promises in this draft.
+
+## Agent runtime and federated integrations
+
+The proposed [production prototype](srs.md#production-prototype-acceptance) has two harnesses with different jobs. The runtime harness owns the request lifecycle, scoped context, capability dispatch, limits, output checks and recovery. The evaluation harness runs fixed questions against versioned policies and measures which behavior earns release acceptance.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  actor Guest
+  participant Runtime as Runtime and access policy
+  participant Catalog as Approved capability catalog
+  participant MCP as Career evidence MCP server
+  participant Draft as Draft model provider
+  participant Review as Evidence review agent
+  participant OTel as Private OpenTelemetry
+
+  Guest->>Runtime: Question with bounded session context
+  Runtime->>Runtime: Check grant and reserve draft plus review budgets
+  alt Authorized and reserved
+    Runtime->>Catalog: Pin policy, contracts and allowed bindings
+    Runtime->>MCP: Discover approved tool and fetch evidence for pinned corpus
+    MCP-->>Runtime: Versioned source IDs and permitted excerpts
+    alt Evidence available and within limits
+      Runtime->>Draft: Bounded question and published evidence
+      Draft-->>Runtime: Draft and source IDs
+      Runtime->>Runtime: Validate draft schema and citation scope
+      opt Draft passes citation checks
+        Runtime->>Review: Scoped draft, evidence, versions and deadline
+        Note over Review: One bounded model call
+        Review-->>Runtime: Verdict and bounded reason codes
+      end
+    end
+  else Denied or budget unavailable
+    Note over Runtime: Skip capability and provider calls
+  end
+  Runtime->>Runtime: Decide answer or abstention and reconcile spend
+  Runtime-->>Guest: Final outcome and session-safe answer inspector
+  Runtime-->>OTel: Correlated, sanitized stage evidence
+```
+
+[Standalone runtime diagram](diagrams/agent-runtime.mmd)
+
+| Component | Owns | Interface and authority |
+|---|---|---|
+| Runtime in SvelteKit | Session and grant checks, atomic reservation, per-turn context, capability routing, final answer/citations and session-safe projection | Pin corpus, capability catalog and policy per request. Route only registered capabilities. Draft with a bounded model call. Validate both the draft and reviewer response and decide the user-visible outcome in code. |
+| Career evidence MCP server | Read-only retrieval and source result contract over the approved corpus, backed by PostgreSQL full-text search | Independently addressable private service. Discover and invoke a bounded search capability with the pinned MCP SDK/protocol version. Accept bounded query, corpus digest and result limit from the authorized runtime. Return exact excerpt, evidence class, source/chunk IDs and corpus digest. Its scoped DB role reads published data only. No provider access. |
+| Evidence review agent | Independent model-backed assessment of whether draft claims follow from the selected evidence | Independently addressable private service using a typed request/result contract. Receive only the current question, scoped draft and evidence, pinned versions, opaque execution ID and deadline. Return a verdict and bounded reason codes anchored to claim/citation IDs. Outbound calls are limited to its configured model path and payload-free telemetry. No access to DB, MCP, publishing, visitor grants, or prior conversations. |
+| Evaluation runner | Versioned case manifests, human judgments, reports and reproducibility commands | Run both policies outside guest traffic against a frozen snapshot. Use fakes for routine CI failures and bounded live comparisons for quality claims. Record the policy selected and its tradeoff. |
+
+Use a checked-in, deploy-time catalog with one record per capability. Minimum fields are stable ID, owner, contract/schema version, implementation revision, allowlisted binding, caller/scope, accepted data class, deadline, invocation limit and enablement. Validate records and discovered tool schemas before use. The runtime owns routing, and the private service enforces its own caller, contract and input restrictions. Tool output and draft content are untrusted data. Registry entry, schema validation, and authorized capabilities constrain what executes. Reject unknown IDs, incompatible versions and mismatched corpus digests. A compatible alternative behind the same contract must replace a binding without changing caller logic. Rehearse upgrade/disable and recovery with contract validation, readiness and timeout; keep credentials and private addresses out of the public projection.
+
+The prototype uses private MCP Streamable HTTP with a compatible pinned SDK and an authenticated private typed HTTP review interface. Confirm compatibility in a focused spike. The design can demonstrate independent versioning, constrained contribution and failure isolation on one host. A2A conformance, independent teams, multi-provider routing, durable agent execution and persistent cross-session memory require separate work. The current review interface uses the project's own contract. See the [protocol references](sources.md#agent-runtime-and-evaluation).
+
+Maintain only a bounded, ephemeral conversation window. Validate any resubmitted state; each turn retrieves fresh, version-pinned evidence. Do not send login state, private sources, all conversation history, or scope tokens to models. Bound the runtime to one retrieval, one draft and at most one review model call per turn in the initial configuration. Reserve the maximum permitted cost for each paid stage in a single atomic authorization before either stage can dispatch. Internal review may send one bounded provider call only from an authenticated, authorized execution with a live deadline; deduplicate execution or prohibit automatic resends across the review boundary. The app reconciles known usage once and retains conservative accounting for ambiguous sends. Disable paid AI centrally. Publish no factual draft before deterministic citation checks and a passing review. Show stage-only progress, then a reviewed answer or an explicit reason category, such as insufficient evidence or a temporary integration failure.
+
+Propagate trace context across both private integrations and emit allowlisted span fields at the source. Carry no visitor identity or request text in tracing baggage. Join the spans to the initiating run. Derive a separate session-visible projection from the same stage events. Return the inspector with the response or hold it inside that session's bounded lifetime. Show stage/timing, actual capability and policy versions, granted tool scope, decision category and exact public evidence excerpts. Keep question/draft text, model reasoning, credentials and identifying labels out of spans and diagnostic projections. Publish only owner-reviewed example records and aggregate eval results. A failed exporter must leave a bounded footprint and preserve runtime correctness.
+
+### Calibration and acceptance comparison
+
+Start with a single-draft baseline using the same MCP retrieval, model configuration and deterministic citation checks. Compare it with the candidate that reviews attribution and claim support before release. Hold the retrieved evidence and draft fixed in the paired quality comparison, and report the timing of each path separately. Freeze the question splits up front, tune accept/abstain rules on calibration examples, then score the untouched acceptance set against owner-reviewed labels. Compare subjectively supported claims and false abstention as well as mechanically valid citations. Include realistic follow-ups, company context confused with personal work, unsupported achievements and instructions embedded in untrusted text. Human judgments resolve rubric disagreements. Save rule and threshold choices, test denominators, sample limitations, model versions and cost/latency deltas. The live path uses the reviewed policy once it meets the [prototype gate](srs.md#production-prototype-acceptance).
+
+The same evaluation pattern fits owner-side extraction and later job matching. For ingestion, compare rules and model-suggested fields against reviewed personal-role and outcome labels, with candidate output isolated until publication review. For matching, compare requirement-to-evidence coverage, missing evidence and unsupported inferences against a versioned rubric. Treat both as extensions of their current milestones and preserve separate datasets, permissions and acceptance rules.
 
 ## Data level
 
@@ -300,7 +378,7 @@ erDiagram
 | Usage reservations and reconciled totals | Chat/access module | Metadata 30 days proposed; retain non-identifying aggregate budget totals as needed. |
 | Traces and logs | Operator only | Seven days traces / 30 days logs proposed; redact text, tokens and identifiers at source. |
 | Signed records and proof files | Publication process appends; anyone verifies public versions | Retained in multiple locations; corrections never rewrite signed record bytes. |
-| Query metadata | Operator; only sanitized per-query timing shown to visitor | No question, answer, raw prompt, job description, or chain-of-thought fields. |
+| Query metadata | Operator; a sanitized projection is sent to the initiating session, with examples curated separately for release evidence | No question, answer, raw prompt, job description, or chain-of-thought fields. |
 
 Retention values are P-level proposals (U07). Deletion also needs a documented backup-expiration window. The browser may hold in-session conversation state in memory; the server validates and truncates any resubmitted history. Operational logs must not accidentally defeat the no-transcript policy. Model-provider retention is a separate contract to disclose and verify.
 
@@ -320,7 +398,9 @@ sequenceDiagram
   participant Proof as Sigstore / OpenTimestamps
   participant Store as Artifacts / Postgres
   actor Visitor
-  participant App as SvelteKit
+  participant App as SvelteKit runtime
+  participant MCP as Private career evidence MCP server
+  participant Reviewer as Private evidence review agent
   participant External as Email / Model providers
   Owner->>CLI: Submit private input and requested transform
   CLI->>Queue: Job ID, input reference, pipeline version
@@ -340,11 +420,18 @@ sequenceDiagram
   alt Denied or budget unavailable
     App-->>Visitor: Explain access / allowance state
   else Authorized and reserved
-    App->>Store: Retrieve from one signed public corpus version
-    App->>External: Bounded model request with selected evidence
-    External-->>App: Stream / completion / failure
-    App-->>Visitor: Provisional stream then final sources and safe timings
+    App->>MCP: Discover and invoke read-only search on pinned corpus
+    MCP-->>App: Approved evidence or bounded failure
+    opt Evidence is available
+      App->>External: Draft with approved evidence
+      External-->>App: Bounded draft or failure
+      opt Draft passes citation checks
+        App->>Reviewer: Delegate scoped review
+        Reviewer-->>App: Bounded verdict or failure
+      end
+    end
     App->>Store: Reconcile usage, store metadata only
+    App-->>Visitor: Reviewed answer or abstention with inspector
   end
   Note over Git,Proof: Baseline uses existing tools before implementation, later CI automates records
   Owner->>Git: Accept checks-passed milestone by digest
@@ -361,6 +448,7 @@ sequenceDiagram
 | Failure | Required behavior |
 |---|---|
 | Email delivery error / duplicate request | Bound retries and sending spend; preserve generic public response and useful private diagnostic. No grant before redemption. |
+| Capability unavailable, disabled or incompatible | Reject the route or fail closed for the current run. Keep public pages and existing proof downloads available. Return a safe stage outcome. |
 | Provider timeout after potential model execution | Mark usage uncertain and retain conservative reservation until reconciliation; do not automatically retry an ambiguous charge. |
 | Browser disconnect | Attempt upstream cancellation; bound execution even if cancellation is not honored; finalize/retain reservation appropriately. |
 | Worker crash / duplicate delivery | Retry only idempotent work; test ack/requeue configuration, use unique result key and bounded poison-job handling. |
