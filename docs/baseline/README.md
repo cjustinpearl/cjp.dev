@@ -1,6 +1,6 @@
 # M0 baseline preparation
 
-Prepared 2026-11-13; storage verification completed 2026-11-23. **No start record has been signed or timestamped.**
+Prepared 2026-11-13. Storage verification completed 2026-11-23. On 2026-11-24 the first signing attempt failed the certificate issuer check. The owner approved correcting the issuer to Google's documented value. The historical draft retains the earlier policy. The new baseline links the first signed digest and its public log entry.
 
 The [draft record](baseline.draft.json) gives this project the stable ID `urn:uuid:5b000c4f-6153-4f29-a5b3-9b0bd8f2a05a`. Keep that ID through later milestones and repository moves. The draft pins the 15-file planning snapshot at commit `8ec3af396dcf1ded49e1e69d4b1a4391b28c9389`, with a SHA-256 and byte length for each file. Its start time is deliberately null.
 
@@ -73,7 +73,7 @@ Save verifier outputs after checking the final published downloads. Reports and 
 
    cosign verify-blob --bundle baseline.sigstore.json \
      --certificate-identity 'c.justin.pearl@gmail.com' \
-     --certificate-oidc-issuer 'https://oauth2.sigstore.dev/auth' \
+     --certificate-oidc-issuer 'https://accounts.google.com' \
      baseline.json
 
    ots stamp baseline.json
