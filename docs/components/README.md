@@ -1,4 +1,4 @@
-# Production prototype profile v2
+# Production prototype profile v3
 
 Scope approved on 2026-11-23 and revised by the owner on 2026-11-24. The acceptance contract is PRD-P0-01–03 and [DEMO-01 through DEMO-07](../srs.md#production-prototype-acceptance) on `https://cjp.dev`. Scope approval precedes the M0 witness. Implementation, production activation and personal acceptance have their own evidence.
 
@@ -14,10 +14,10 @@ For the public interface, provide an accessible System / Light / Dark preference
 
 ### Operating limits
 
-| Policy | Accepted v2 |
+| Policy | Accepted v3 |
 |---|---|
 | Invitation and session | Individual eligibility 48h, mailbox link 10 min and single-use on deliberate redemption, session 8h absolute. Grant 20 turns and US$0.40 over 7 days, revocable. Reissue and re-login preserve used allowance. |
-| Concurrency and mail | One active turn per grant, three globally including evaluation. At most ten sends per normalized address/hour, ten per trusted network/hour and 30 globally per UTC day. One send attempt per accepted request. |
+| Concurrency and mail | One active turn per grant, three globally including evaluation. At most 10 sends per normalized address/hour, 30 per trusted network/hour and 100 globally per UTC day. One send attempt per accepted request. |
 | Request and evidence | 12 KiB HTTP body, 1,000 UTF-8 bytes per question. One preceding approved Q&A pair summarized within 256 tokens in the current session. Fresh retrieval every turn, at most three passages of 384 tokens each. |
 | Calls and time | One evidence search, one draft, at most one review model call. End-to-end deadline 45s. MCP discovery/search 3s total, draft 18s, review including its provider 20s, all capped by remaining time. Zero automatic paid retries. |
 | Model tokens and reservation | At most 4,096 total input tokens per paid stage. Draft output ≤640 and review output ≤256 billable tokens including reasoning. Reserve a conservative US$0.02 per complete turn at the reviewed rate card before dispatch. Fail closed if rates or inputs no longer fit. |

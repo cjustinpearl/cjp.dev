@@ -65,7 +65,7 @@ P01–P10 were approved on 2026-10-19. Their original IDs are retained for trace
 | ID | Resolution |
 |---|---|
 | U01 | On 2026-10-12, owner confirmed that US$20–50/month covers additional project spending outside the existing Hetzner bill. The current base hosting charge is not needed to allocate this budget; check it before proposing any hosting change. |
-| U09 | On 2026-11-24 the owner raised the normalized-address send cap from 3 to 10 per hour and accepted the added repeat-mail risk. The trusted-network limit is 10/hour and the site limit is 30/UTC day. On 2026-11-23 the owner approved DEMO-01–07, the prototype deferrals and the [exact limits](components/README.md), including US$16 guest and US$4 evaluation within a US$20 ceiling. |
+| U09 | On 2026-11-24 the owner raised the normalized-address send cap from 3 to 10 per hour and accepted the added repeat-mail risk. The owner subsequently set the trusted-network limit to 30/hour and the site limit to 100/UTC day. Tighten these limits if observed usage warrants it. On 2026-11-23 the owner approved DEMO-01–07, the prototype deferrals and the [exact limits](components/README.md), including US$16 guest and US$4 evaluation within a US$20 ceiling. |
 
 ## Decisions still needed
 
